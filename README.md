@@ -34,3 +34,30 @@ Python 3.10+ and numpy.
 ## License
 
 MIT. The gene set is the published SenMayo list; the paper remains the citation for the set.
+
+## Traceable scoring (v0.2)
+
+Install with `python -m pip install -e .`. Scoring now rejects duplicate/blank
+sample IDs, duplicate normalized gene symbols, ragged tables, NaN and infinity.
+Gene symbols are trimmed and uppercased consistently; the signature must be
+nonempty and unique.
+
+```bash
+senescore score expression.csv --seed 0 --controls 5 --bins 20 > score.json
+```
+
+JSON includes the exact input hash, seed, bin/control settings and the actual
+control genes sampled for each signature gene. With these controls the score
+is reproducible and inspectable. Reordering input gene columns preserves
+selection, including expression ties.
+
+This is a cohort-dependent, per-signature-gene control average, not an exact
+implementation of Seurat's pooled-control method. Bins and controls use means
+across the supplied samples. Therefore scores from separately scored cohorts
+are not automatically comparable, and scoring all samples before supervised
+train/test splitting can leak cohort information. Raw counts are not normalized
+by this command. Supply consistently processed log-expression values.
+
+Cohen's d now reports an error for unequal constant groups, whose pooled
+variance is zero, instead of incorrectly returning no effect. The synthetic
+demo remains a software test, not a senescence diagnosis.
