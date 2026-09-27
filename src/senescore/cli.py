@@ -10,7 +10,7 @@ import sys
 
 from senescore.genes import SENMAYO_HUMAN
 from senescore.io import read_expression_csv
-from senescore.score import ScoreError, cohen_d, module_score, random_signature
+from senescore.score import ScoreError, cohen_d, module_score, module_score_train_only, random_signature
 from senescore.synthetic import spiked_cohort
 
 
@@ -39,6 +39,7 @@ def main(argv=None) -> int:
     score.add_argument("--seed", type=int, default=0)
     score.add_argument("--controls", type=int, default=5)
     score.add_argument("--bins", type=int, default=20)
+    score.add_argument("--train-samples", help="text file of sample ids; bins and controls are fit on these rows only")
     args = parser.parse_args(argv)
     if args.cmd == "demo":
         json.dump(bakeoff(), sys.stdout, indent=2)
@@ -46,8 +47,19 @@ def main(argv=None) -> int:
         return 0
     try:
         ids, genes, matrix = read_expression_csv(args.csv)
-        result = module_score(matrix, genes, SENMAYO_HUMAN, seed=args.seed,
-                              n_ctrl=args.controls, n_bins=args.bins)
+        if args.train_samples:
+            wanted = [line.strip() for line in Path(args.train_samples).read_text(encoding="utf-8").splitlines() if line.strip()]
+            missing = [sample for sample in wanted if sample not in ids]
+            if missing or len(wanted) != len(set(wanted)):
+                raise ScoreError("train sample ids must be unique and present in the expression table")
+            lookup = {sample: i for i, sample in enumerate(ids)}
+            result = module_score_train_only(
+                matrix, genes, SENMAYO_HUMAN, [lookup[sample] for sample in wanted],
+                seed=args.seed, n_ctrl=args.controls, n_bins=args.bins,
+            )
+        else:
+            result = module_score(matrix, genes, SENMAYO_HUMAN, seed=args.seed,
+                                  n_ctrl=args.controls, n_bins=args.bins)
     except (ScoreError, OSError) as exc:
         parser.error(str(exc))
     payload = {

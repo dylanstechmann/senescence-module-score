@@ -61,3 +61,19 @@ by this command. Supply consistently processed log-expression values.
 Cohen's d now reports an error for unequal constant groups, whose pooled
 variance is zero, instead of incorrectly returning no effect. The synthetic
 demo remains a software test, not a senescence diagnosis.
+
+## Training-row controls (v0.3)
+
+Bins and control genes depend on the samples you pass in. Scoring a full
+supervised table before the split lets test rows choose the controls.
+
+```bash
+senescore score expression.csv --train-samples train_ids.txt
+```
+
+`train_ids.txt` is one sample id per line. Those rows alone set the expression
+bins and the sampled control genes. Every row in the CSV is then scored with
+that frozen set. `module_score_train_only` is the Python entry point. Fitting
+on every row still matches `module_score`. This does not make scores comparable
+across cohorts, and it is still not a senescence diagnosis.
+
