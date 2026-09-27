@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "senescore"
-version = "0.2.0"
+version = "0.3.0"
 description = "Control-gene module score for the published SenMayo set."
 readme = "README.md"
 requires-python = ">=3.10"
