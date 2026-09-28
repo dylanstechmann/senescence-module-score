@@ -88,7 +88,7 @@ def _select_controls(means, names, signature, *, seed, n_ctrl, n_bins, block_fro
     return present, missing, coverage, sig_cols, control_cols
 
 
-def _apply_controls(matrix, names, present, sig_cols, control_cols):
+def _apply_controls(matrix, names, present, sig_cols, control_cols, *, z_reference_rows=None):
     sig_mean = matrix[:, sig_cols].mean(axis=1)
     ctrl_mean = np.mean([matrix[:, cols].mean(axis=1) for cols in control_cols], axis=0)
     scores = sig_mean - ctrl_mean
@@ -97,8 +97,9 @@ def _apply_controls(matrix, names, present, sig_cols, control_cols):
     for gene in ORTHOGONAL:
         if gene in index:
             col = matrix[:, index[gene]]
-            std = float(col.std()) or 1.0
-            orthogonal[gene] = ((col - col.mean()) / std).tolist()
+            reference = col if z_reference_rows is None else col[z_reference_rows]
+            std = float(reference.std()) or 1.0
+            orthogonal[gene] = ((col - reference.mean()) / std).tolist()
     return scores, orthogonal
 
 
@@ -126,6 +127,7 @@ def module_score(
         "configuration": {"seed": seed, "n_ctrl": n_ctrl, "n_bins": n_bins},
         "control_genes": {gene: [names[i] for i in cols] for gene, cols in zip(present, control_cols)},
         "orthogonal_z": orthogonal,
+        "orthogonal_fit_on": "all_rows",
         "citation": CITATION,
         "method": "control-gene module score; not the GSEA procedure in Saul et al. 2022",
     }
@@ -148,16 +150,18 @@ def module_score_train_only(
     senescence assay.
     """
     matrix, names, signature = _validated_names(matrix, gene_names, signature, n_ctrl, n_bins)
-    rows = np.asarray(train_rows, dtype=int)
-    if rows.ndim != 1 or len(rows) < 2 or len(set(rows.tolist())) != len(rows):
+    rows = np.asarray(train_rows)
+    if rows.ndim != 1 or rows.dtype.kind not in "iu" or len(rows) < 2 or len(set(rows.tolist())) != len(rows):
         raise ScoreError("train_rows must be at least two unique sample indexes")
-    if rows.dtype.kind not in "iu" or int(rows.min()) < 0 or int(rows.max()) >= len(matrix):
+    if int(rows.min()) < 0 or int(rows.max()) >= len(matrix):
         raise ScoreError("train_rows out of range")
     present, missing, coverage, sig_cols, control_cols = _select_controls(
         matrix[rows].mean(axis=0), names, signature, seed=seed, n_ctrl=n_ctrl, n_bins=n_bins,
         block_from_controls=block_from_controls,
     )
-    scores, orthogonal = _apply_controls(matrix, names, present, sig_cols, control_cols)
+    scores, orthogonal = _apply_controls(
+        matrix, names, present, sig_cols, control_cols, z_reference_rows=rows
+    )
     return {
         "scores": scores,
         "coverage": coverage,
@@ -168,6 +172,7 @@ def module_score_train_only(
         "train_rows": [int(i) for i in rows],
         "control_genes": {gene: [names[i] for i in cols] for gene, cols in zip(present, control_cols)},
         "orthogonal_z": orthogonal,
+        "orthogonal_fit_on": "train_rows_only",
         "citation": CITATION,
         "controls_fit_on": "train_rows_only",
         "method": (

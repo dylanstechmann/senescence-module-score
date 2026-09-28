@@ -76,6 +76,7 @@ def main(argv=None) -> int:
             gene: [round(v, 3) for v in values]
             for gene, values in result["orthogonal_z"].items()
         },
+        "orthogonal_fit_on": result["orthogonal_fit_on"],
         "citation": result["citation"],
         "method": result["method"],
         "not": "Not a biological-age clock, not a diagnosis, and not evidence that a compound is senolytic.",
