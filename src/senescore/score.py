@@ -32,6 +32,30 @@ def cohen_d(group_a: np.ndarray, group_b: np.ndarray) -> float:
     return float((group_a.mean() - group_b.mean()) / pooled)
 
 
+def pearson_correlation(x: np.ndarray, y: np.ndarray) -> float:
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    if len(x) < 2 or len(x) != len(y):
+        return 0.0
+    vx = x - x.mean()
+    vy = y - y.mean()
+    denom = float(np.sqrt(np.sum(vx ** 2) * np.sum(vy ** 2)))
+    if denom == 0.0:
+        return 0.0
+    return float(np.sum(vx * vy) / denom)
+
+
+def spearman_correlation(x: np.ndarray, y: np.ndarray) -> float:
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    if len(x) < 2 or len(x) != len(y):
+        return 0.0
+    rx = np.argsort(np.argsort(x)).astype(float)
+    ry = np.argsort(np.argsort(y)).astype(float)
+    return pearson_correlation(rx, ry)
+
+
+
 def random_signature(gene_names: list[str], size: int, seed: int, forbidden: set[str]) -> tuple[str, ...]:
     rng = np.random.default_rng(seed)
     pool = [gene for gene in gene_names if gene.upper() not in forbidden]
@@ -88,13 +112,13 @@ def _select_controls(means, names, signature, *, seed, n_ctrl, n_bins, block_fro
     return present, missing, coverage, sig_cols, control_cols
 
 
-def _apply_controls(matrix, names, present, sig_cols, control_cols, *, z_reference_rows=None):
+def _apply_controls(matrix, names, present, sig_cols, control_cols, *, z_reference_rows=None, orthogonal_genes=ORTHOGONAL):
     sig_mean = matrix[:, sig_cols].mean(axis=1)
     ctrl_mean = np.mean([matrix[:, cols].mean(axis=1) for cols in control_cols], axis=0)
     scores = sig_mean - ctrl_mean
     index = {gene: i for i, gene in enumerate(names)}
     orthogonal = {}
-    for gene in ORTHOGONAL:
+    for gene in orthogonal_genes:
         if gene in index:
             col = matrix[:, index[gene]]
             reference = col if z_reference_rows is None else col[z_reference_rows]
@@ -111,13 +135,15 @@ def module_score(
     n_ctrl: int = 5,
     n_bins: int = 20,
     block_from_controls: set[str] | None = None,
+    orthogonal: tuple[str, ...] = ORTHOGONAL,
+    citation: str = CITATION,
 ):
     matrix, names, signature = _validated_names(matrix, gene_names, signature, n_ctrl, n_bins)
     present, missing, coverage, sig_cols, control_cols = _select_controls(
         matrix.mean(axis=0), names, signature, seed=seed, n_ctrl=n_ctrl, n_bins=n_bins,
         block_from_controls=block_from_controls,
     )
-    scores, orthogonal = _apply_controls(matrix, names, present, sig_cols, control_cols)
+    scores, orthogonal_dict = _apply_controls(matrix, names, present, sig_cols, control_cols, orthogonal_genes=orthogonal)
     return {
         "scores": scores,
         "coverage": coverage,
@@ -126,9 +152,9 @@ def module_score(
         "missing": missing,
         "configuration": {"seed": seed, "n_ctrl": n_ctrl, "n_bins": n_bins},
         "control_genes": {gene: [names[i] for i in cols] for gene, cols in zip(present, control_cols)},
-        "orthogonal_z": orthogonal,
+        "orthogonal_z": orthogonal_dict,
         "orthogonal_fit_on": "all_rows",
-        "citation": CITATION,
+        "citation": citation,
         "method": "control-gene module score; not the GSEA procedure in Saul et al. 2022",
     }
 
@@ -142,6 +168,8 @@ def module_score_train_only(
     n_ctrl: int = 5,
     n_bins: int = 20,
     block_from_controls: set[str] | None = None,
+    orthogonal: tuple[str, ...] = ORTHOGONAL,
+    citation: str = CITATION,
 ):
     """Fit bins and control genes on training rows only, then score every row.
 
@@ -159,8 +187,8 @@ def module_score_train_only(
         matrix[rows].mean(axis=0), names, signature, seed=seed, n_ctrl=n_ctrl, n_bins=n_bins,
         block_from_controls=block_from_controls,
     )
-    scores, orthogonal = _apply_controls(
-        matrix, names, present, sig_cols, control_cols, z_reference_rows=rows
+    scores, orthogonal_dict = _apply_controls(
+        matrix, names, present, sig_cols, control_cols, z_reference_rows=rows, orthogonal_genes=orthogonal
     )
     return {
         "scores": scores,
@@ -171,9 +199,9 @@ def module_score_train_only(
         "configuration": {"seed": seed, "n_ctrl": n_ctrl, "n_bins": n_bins, "n_train_rows": int(len(rows))},
         "train_rows": [int(i) for i in rows],
         "control_genes": {gene: [names[i] for i in cols] for gene, cols in zip(present, control_cols)},
-        "orthogonal_z": orthogonal,
+        "orthogonal_z": orthogonal_dict,
         "orthogonal_fit_on": "train_rows_only",
-        "citation": CITATION,
+        "citation": citation,
         "controls_fit_on": "train_rows_only",
         "method": (
             "control-gene module score with bins and controls fit on training rows only; "

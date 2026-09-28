@@ -24,10 +24,17 @@ For compounds and evidence grades, see [geroscience-compound-atlas](https://gith
 ```bash
 make test
 PYTHONPATH=src python3 -m senescore.cli demo
-PYTHONPATH=src python3 -m senescore.cli score path/to/expression.csv
+PYTHONPATH=src python3 -m senescore.cli score path/to/expression.csv --gene-set senmayo
+PYTHONPATH=src python3 -m senescore.cli score path/to/expression.csv --gene-set fridman
+PYTHONPATH=src python3 -m senescore.cli compare path/to/expression.csv --set-a senmayo --set-b fridman
 ```
 
-CSV shape: a header row of gene symbols, and a sample id in column 1. Values should already be on a log-expression scale. If fewer than 60% of SenMayo is present, scoring refuses to invent the rest.
+CSV shape: a header row of gene symbols, and a sample id in column 1. Values should already be on a log-expression scale. If fewer than 60% of the chosen gene set is present, scoring refuses to invent the rest.
+
+Supported gene sets:
+- `senmayo`: Human SenMayo 125-gene signature (Saul et al. 2022)
+- `fridman`: Fridman 66-gene senescence and p53/p21 pathway transcriptional signature (Fridman et al. 2006)
+- `sasp`: Coppé 55-gene core SASP secretome signature (Coppé et al. 2008)
 
 Python 3.10+ and numpy.
 
