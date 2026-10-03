@@ -7,7 +7,7 @@ from pathlib import Path
 import sys
 
 from senescore.genes import GENE_SETS, SENMAYO_HUMAN, get_gene_set
-from senescore.io import read_expression_csv
+from senescore.io import read_expression_csv_with_hash
 from senescore.score import (
     ScoreError,
     cohen_d,
@@ -16,6 +16,8 @@ from senescore.score import (
     pearson_correlation,
     random_signature,
     spearman_correlation,
+    transform_module_score,
+    validate_fit_artifact,
 )
 from senescore.synthetic import spiked_cohort
 
@@ -49,6 +51,8 @@ def main(argv=None) -> int:
     score.add_argument("--controls", type=int, default=5)
     score.add_argument("--bins", type=int, default=20)
     score.add_argument("--train-samples", help="text file of sample ids; bins and controls are fit on these rows only")
+    score.add_argument("--fit-artifact", help="write frozen training controls and marker references as JSON")
+    score.add_argument("--apply-artifact", help="apply a previously saved fit artifact to this expression CSV")
 
     compare = sub.add_parser("compare", help="Compare two published gene sets head-to-head on the same expression table")
     compare.add_argument("csv")
@@ -69,7 +73,7 @@ def main(argv=None) -> int:
 
     if args.cmd == "compare":
         try:
-            ids, genes, matrix = read_expression_csv(args.csv)
+            ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(args.csv)
             set_a_info = get_gene_set(args.set_a)
             set_b_info = get_gene_set(args.set_b)
             res_a = module_score(
@@ -93,7 +97,7 @@ def main(argv=None) -> int:
         s_corr = spearman_correlation(res_a["scores"], res_b["scores"])
 
         payload = {
-            "input_sha256": hashlib.sha256(Path(args.csv).read_bytes()).hexdigest(),
+            "input_sha256": input_sha256,
             "comparison": {
                 "set_a": {
                     "key": args.set_a,
@@ -117,8 +121,9 @@ def main(argv=None) -> int:
                 },
             },
             "correlation": {
-                "pearson_r": round(p_corr, 4),
-                "spearman_rho": round(s_corr, 4),
+                "pearson_r": round(p_corr, 4) if p_corr is not None else None,
+                "spearman_rho": round(s_corr, 4) if s_corr is not None else None,
+                "undefined_reason": "non-finite, mismatched, or constant score vectors" if p_corr is None or s_corr is None else None,
             },
             "samples": [
                 {
@@ -136,10 +141,24 @@ def main(argv=None) -> int:
         sys.stdout.write("\n")
         return 0
 
+    if args.apply_artifact and (args.train_samples or args.fit_artifact):
+        parser.error("--apply-artifact cannot be combined with --train-samples or --fit-artifact")
+    if args.fit_artifact and not args.train_samples:
+        parser.error("--fit-artifact requires --train-samples")
+
     try:
-        ids, genes, matrix = read_expression_csv(args.csv)
-        gs_info = get_gene_set(args.gene_set)
-        if args.train_samples:
+        ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(args.csv)
+        if args.apply_artifact:
+            artifact = json.loads(Path(args.apply_artifact).read_text(encoding="utf-8"))
+            validate_fit_artifact(artifact)
+            result = transform_module_score(matrix, genes, artifact)
+            output_gene_set = artifact.get("gene_set_key") or "custom"
+        else:
+            gs_info = get_gene_set(args.gene_set)
+            output_gene_set = args.gene_set
+        if args.apply_artifact:
+            pass
+        elif args.train_samples:
             wanted = [line.strip() for line in Path(args.train_samples).read_text(encoding="utf-8").splitlines() if line.strip()]
             missing = [sample for sample in wanted if sample not in ids]
             if missing or len(wanted) != len(set(wanted)):
@@ -151,7 +170,15 @@ def main(argv=None) -> int:
                 block_from_controls=set(gs_info["symbols"]),
                 orthogonal=gs_info["orthogonal"],
                 citation=gs_info["citation"],
+                gene_set_key=args.gene_set,
+                training_sample_ids=wanted,
+                training_input_sha256=input_sha256,
             )
+            if args.fit_artifact:
+                Path(args.fit_artifact).write_text(
+                    json.dumps(result["fit_artifact"], indent=2, allow_nan=False) + "\n",
+                    encoding="utf-8",
+                )
         else:
             result = module_score(
                 matrix, genes, gs_info["symbols"], seed=args.seed,
@@ -160,11 +187,11 @@ def main(argv=None) -> int:
                 orthogonal=gs_info["orthogonal"],
                 citation=gs_info["citation"],
             )
-    except (ScoreError, OSError) as exc:
+    except (ScoreError, OSError, ValueError) as exc:
         parser.error(str(exc))
     payload = {
-        "input_sha256": hashlib.sha256(Path(args.csv).read_bytes()).hexdigest(),
-        "gene_set": args.gene_set,
+        "input_sha256": input_sha256,
+        "gene_set": output_gene_set,
         "configuration": result["configuration"],
         "control_genes": result["control_genes"],
         "samples": [
@@ -182,6 +209,13 @@ def main(argv=None) -> int:
         "method": result["method"],
         "not": "Not a biological-age clock, not a diagnosis, and not evidence that a compound is senolytic.",
     }
+    if args.apply_artifact:
+        payload["fit_artifact_version"] = artifact["version"]
+        payload["training_sample_ids_sha256"] = artifact.get("training_sample_ids_sha256")
+        payload["training_input_sha256"] = artifact.get("training_input_sha256")
+    elif args.train_samples:
+        payload["training_sample_ids_sha256"] = result["fit_artifact"]["training_sample_ids_sha256"]
+        payload["fit_artifact_path"] = str(Path(args.fit_artifact)) if args.fit_artifact else None
     json.dump(payload, sys.stdout, indent=2, allow_nan=False)
     sys.stdout.write("\n")
     return 0
@@ -189,4 +223,3 @@ def main(argv=None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

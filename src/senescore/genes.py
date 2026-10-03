@@ -24,7 +24,10 @@ SENMAYO_HUMAN = (
     "VEGFA", "VEGFC", "VGF", "WNT16", "WNT2",
 )
 
-FRIDMAN_SENESCENCE = (
+# This historical project panel is retained for backwards-compatible scoring,
+# but it is not the source-aligned MSigDB Fridman set. In particular it mixes
+# genes from the source's up/down signatures, so do not interpret its direction.
+FRIDMAN_CUSTOM_PANEL = (
     "ACTA2", "ANGPTL4", "AXL", "BEX3", "BMP2", "CCND1", "CCNE1", "CDKN1A", "CDKN2A",
     "COL1A1", "COL1A2", "COL3A1", "CSF1", "CTGF", "CXCL1", "CXCL8", "CYR61", "DDB2",
     "EGR1", "ETS2", "FAS", "FN1", "GADD45A", "GDF15", "HIC1", "ICAM1", "IGFBP2",
@@ -35,7 +38,9 @@ FRIDMAN_SENESCENCE = (
     "TNFRSF10B", "TP53", "VEGFA", "VIM",
 )
 
-SASP_COPPE = (
+# This convenience panel is not a machine-readable transcription of a
+# particular supplementary table; describe it as custom until that is sourced.
+SASP_CUSTOM_PANEL = (
     "AREG", "CCL1", "CCL2", "CCL20", "CCL26", "CCL3", "CCL4", "CCL5", "CCL7", "CCL8",
     "CSF2", "CXCL1", "CXCL2", "CXCL3", "CXCL8", "CXCL10", "CXCL12", "EGF", "FAS",
     "FGF2", "GDF15", "HGF", "ICAM1", "IGFBP2", "IGFBP3", "IGFBP4", "IGFBP6", "IGFBP7",
@@ -57,19 +62,25 @@ GENE_SETS: dict[str, dict] = {
     },
     "fridman": {
         "name": "Fridman Senescence",
-        "symbols": FRIDMAN_SENESCENCE,
-        "citation": "Fridman et al., Cell Cycle 5(12), 2854-2860 (2006). https://doi.org/10.4161/cc.5.12.2854",
-        "description": "Fridman 66-gene senescence and p53/p21 pathway transcriptional signature",
+        "symbols": FRIDMAN_CUSTOM_PANEL,
+        "citation": "Project-curated custom 66-gene panel; membership and direction not verified against a canonical Fridman signature.",
+        "description": "Custom panel inspired by Fridman senescence literature; not the canonical MSigDB FRIDMAN_SENESCENCE_UP set",
         "orthogonal": (),
+        "source_status": "custom_unverified",
     },
     "sasp": {
         "name": "SASP Coppé",
-        "symbols": SASP_COPPE,
-        "citation": "Coppé et al., PLoS Biology 6(12), e301 (2008). https://doi.org/10.1371/journal.pbio.0060301",
-        "description": "Coppé 2008 core senescence-associated secretory phenotype (SASP) signature",
+        "symbols": SASP_CUSTOM_PANEL,
+        "citation": "Project-curated custom SASP panel; membership not verified against a specific Coppé supplementary table.",
+        "description": "Custom SASP-oriented panel; not a source-transcribed Coppé signature",
         "orthogonal": ORTHOGONAL,
+        "source_status": "custom_unverified",
     },
 }
+
+# Backwards-compatible names for callers that imported the original constants.
+FRIDMAN_SENESCENCE = FRIDMAN_CUSTOM_PANEL
+SASP_COPPE = SASP_CUSTOM_PANEL
 
 
 def get_gene_set(name: str) -> dict:
@@ -78,4 +89,3 @@ def get_gene_set(name: str) -> dict:
         options = ", ".join(sorted(GENE_SETS.keys()))
         raise KeyError(f"unknown gene set '{name}'; available: {options}")
     return GENE_SETS[key]
-

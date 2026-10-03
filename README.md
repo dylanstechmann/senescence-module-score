@@ -75,7 +75,8 @@ Bins and control genes depend on the samples you pass in. Scoring a full
 supervised table before the split lets test rows choose the controls.
 
 ```bash
-senescore score expression.csv --train-samples train_ids.txt
+senescore score training.csv --train-samples train_ids.txt --fit-artifact senmayo-fit.json
+senescore score followup_batch.csv --apply-artifact senmayo-fit.json
 ```
 
 `train_ids.txt` is one sample id per line. Those rows alone set the expression
@@ -83,9 +84,14 @@ bins and the sampled control genes. Every row in the CSV is then scored with
 that frozen set. Optional CDKN1A/CDKN2A z-scores also use the training rows
 for centering and scaling; JSON records `orthogonal_fit_on`. Fitting
 on all rows can leak held-out expression into those marker z-scores.
-`module_score_train_only` is the Python entry point. Fitting
-on every row still matches `module_score`. This does not make scores comparable
-across cohorts, and it is still not a senescence diagnosis.
+`--fit-artifact` writes the exact controls, marker reference statistics,
+signature and feature-schema hashes, training sample IDs/hash, and source CSV
+hash. `--apply-artifact` reuses those values without refitting; the later CSV
+must have the same gene names in the same order or it fails closed.
+`module_score_train_only`, `fit_module_score`, and `transform_module_score`
+are the Python entry points. Fitting on every row still matches
+`module_score`. A frozen artifact improves reproducibility; it does not make
+scores comparable across independently collected cohorts or establish a
+senescence diagnosis.
 Training-row indexes must be distinct integers within the table; fractional
 indexes are refused rather than silently truncated.
-

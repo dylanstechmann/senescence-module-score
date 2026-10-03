@@ -1,4 +1,5 @@
 import io
+import hashlib
 import json
 import os
 import tempfile
@@ -34,6 +35,8 @@ class ScoreTests(unittest.TestCase):
         self.assertEqual(len(SASP_COPPE), len(set(SASP_COPPE)))
         self.assertEqual(get_gene_set("fridman")["symbols"], FRIDMAN_SENESCENCE)
         self.assertEqual(get_gene_set("sasp")["symbols"], SASP_COPPE)
+        self.assertEqual(get_gene_set("fridman")["source_status"], "custom_unverified")
+        self.assertEqual(get_gene_set("sasp")["source_status"], "custom_unverified")
         with self.assertRaises(KeyError):
             get_gene_set("unknown_set")
 
@@ -51,6 +54,12 @@ class ScoreTests(unittest.TestCase):
         c = np.array([5.0, 4.0, 3.0, 2.0, 1.0])
         self.assertAlmostEqual(pearson_correlation(a, c), -1.0)
         self.assertAlmostEqual(spearman_correlation(a, c), -1.0)
+
+    def test_correlations_use_average_tie_ranks_and_report_undefined(self):
+        self.assertAlmostEqual(spearman_correlation(np.array([1, 1, 2, 2]), np.array([1, 2, 1, 2])), 0.0)
+        self.assertIsNone(spearman_correlation(np.ones(4), np.full(4, 3.0)))
+        self.assertIsNone(pearson_correlation(np.ones(4), np.full(4, 3.0)))
+        self.assertIsNone(spearman_correlation(np.array([1.0, np.nan]), np.array([1.0, 2.0])))
 
     def test_low_coverage_raises(self):
         matrix, genes, _ = spiked_cohort(seed=1)
@@ -115,7 +124,34 @@ class ScoreTests(unittest.TestCase):
             self.assertIn("spearman_rho", cmp_data["correlation"])
             self.assertEqual(len(cmp_data["samples"]), len(matrix))
 
+    def test_cli_hash_matches_bytes_used_when_input_changes_during_scoring(self):
+        from senescore import cli
+
+        matrix, genes, _ = spiked_cohort(n_per_group=2, seed=19)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "expr.csv")
+            with open(path, "w", encoding="utf-8") as handle:
+                handle.write("sample," + ",".join(genes) + "\n")
+                for i, row in enumerate(matrix):
+                    handle.write(f"s{i}," + ",".join(map(str, row)) + "\n")
+            with open(path, "rb") as handle:
+                parsed_bytes = handle.read()
+            replacement = "\n".join(["sample,G", "a,999", "b,1000", "c,1001", "d,1002"]) + "\n"
+            original_score = cli.module_score
+
+            def replace_after_parse(*args, **kwargs):
+                result = original_score(*args, **kwargs)
+                with open(path, "w", encoding="utf-8") as handle:
+                    handle.write(replacement)
+                return result
+
+            stdout = io.StringIO()
+            with patch("senescore.cli.module_score", side_effect=replace_after_parse), patch("sys.stdout", stdout):
+                self.assertEqual(cli_main(["score", path]), 0)
+            payload = json.loads(stdout.getvalue())
+            self.assertEqual(payload["input_sha256"], hashlib.sha256(parsed_bytes).hexdigest())
+            self.assertNotEqual(payload["input_sha256"], hashlib.sha256(replacement.encode()).hexdigest())
+
 
 if __name__ == "__main__":
     unittest.main()
-
