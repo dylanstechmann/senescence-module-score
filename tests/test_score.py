@@ -37,6 +37,7 @@ class ScoreTests(unittest.TestCase):
         self.assertEqual(get_gene_set("sasp")["symbols"], SASP_COPPE)
         self.assertEqual(get_gene_set("fridman")["source_status"], "custom_unverified")
         self.assertEqual(get_gene_set("sasp")["source_status"], "custom_unverified")
+        self.assertEqual(get_gene_set("senmayo")["source_status"], "published_gene_set")
         with self.assertRaises(KeyError):
             get_gene_set("unknown_set")
 
@@ -108,6 +109,7 @@ class ScoreTests(unittest.TestCase):
                 self.assertEqual(rc, 0)
             score_data = json.loads(stdout_score.getvalue())
             self.assertEqual(score_data["gene_set"], "fridman")
+            self.assertEqual(score_data["gene_set_source_status"], "custom_unverified")
             self.assertIn("fridman_module_score", score_data["samples"][0])
 
             # test compare subcommand
@@ -120,6 +122,8 @@ class ScoreTests(unittest.TestCase):
             self.assertIn("correlation", cmp_data)
             self.assertEqual(cmp_data["comparison"]["set_a"]["key"], "senmayo")
             self.assertEqual(cmp_data["comparison"]["set_b"]["key"], "fridman")
+            self.assertEqual(cmp_data["comparison"]["set_a"]["source_status"], "published_gene_set")
+            self.assertEqual(cmp_data["comparison"]["set_b"]["source_status"], "custom_unverified")
             self.assertIn("pearson_r", cmp_data["correlation"])
             self.assertIn("spearman_rho", cmp_data["correlation"])
             self.assertEqual(len(cmp_data["samples"]), len(matrix))

@@ -33,8 +33,8 @@ CSV shape: a header row of gene symbols, and a sample id in column 1. Values sho
 
 Supported gene sets:
 - `senmayo`: Human SenMayo 125-gene signature (Saul et al. 2022)
-- `fridman`: Fridman 66-gene senescence and p53/p21 pathway transcriptional signature (Fridman et al. 2006)
-- `sasp`: Coppé 55-gene core SASP secretome signature (Coppé et al. 2008)
+- `fridman`: custom 66-gene panel inspired by senescence literature; not a source-transcribed Fridman signature
+- `sasp`: custom 55-gene SASP-oriented panel; not a source-transcribed Coppé signature
 
 Python 3.10+ and numpy.
 

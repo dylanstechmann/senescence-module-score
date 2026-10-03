@@ -43,10 +43,10 @@ def main(argv=None) -> int:
     sub = parser.add_subparsers(dest="cmd", required=True)
     sub.add_parser("demo")
 
-    score = sub.add_parser("score", help="Score an expression CSV against a published gene set")
+    score = sub.add_parser("score", help="Score an expression CSV against a gene panel")
     score.add_argument("csv")
     score.add_argument("--gene-set", default="senmayo", choices=sorted(GENE_SETS.keys()),
-                       help="published gene set to score (default: senmayo)")
+                       help="gene panel to score (default: senmayo)")
     score.add_argument("--seed", type=int, default=0)
     score.add_argument("--controls", type=int, default=5)
     score.add_argument("--bins", type=int, default=20)
@@ -54,12 +54,12 @@ def main(argv=None) -> int:
     score.add_argument("--fit-artifact", help="write frozen training controls and marker references as JSON")
     score.add_argument("--apply-artifact", help="apply a previously saved fit artifact to this expression CSV")
 
-    compare = sub.add_parser("compare", help="Compare two published gene sets head-to-head on the same expression table")
+    compare = sub.add_parser("compare", help="Compare two gene panels on the same expression table")
     compare.add_argument("csv")
     compare.add_argument("--set-a", default="senmayo", choices=sorted(GENE_SETS.keys()),
-                         help="first gene set (default: senmayo)")
+                         help="first gene panel (default: senmayo)")
     compare.add_argument("--set-b", default="fridman", choices=sorted(GENE_SETS.keys()),
-                         help="second gene set (default: fridman)")
+                         help="second gene panel (default: fridman)")
     compare.add_argument("--seed", type=int, default=0)
     compare.add_argument("--controls", type=int, default=5)
     compare.add_argument("--bins", type=int, default=20)
@@ -103,6 +103,7 @@ def main(argv=None) -> int:
                     "key": args.set_a,
                     "name": set_a_info["name"],
                     "citation": set_a_info["citation"],
+                    "source_status": set_a_info.get("source_status"),
                     "n_signature_total": len(set_a_info["symbols"]),
                     "n_signature_present": res_a["n_signature_present"],
                     "coverage": round(res_a["coverage"], 4),
@@ -113,6 +114,7 @@ def main(argv=None) -> int:
                     "key": args.set_b,
                     "name": set_b_info["name"],
                     "citation": set_b_info["citation"],
+                    "source_status": set_b_info.get("source_status"),
                     "n_signature_total": len(set_b_info["symbols"]),
                     "n_signature_present": res_b["n_signature_present"],
                     "coverage": round(res_b["coverage"], 4),
@@ -171,6 +173,7 @@ def main(argv=None) -> int:
                 orthogonal=gs_info["orthogonal"],
                 citation=gs_info["citation"],
                 gene_set_key=args.gene_set,
+                gene_set_source_status=gs_info.get("source_status"),
                 training_sample_ids=wanted,
                 training_input_sha256=input_sha256,
             )
@@ -192,10 +195,14 @@ def main(argv=None) -> int:
     payload = {
         "input_sha256": input_sha256,
         "gene_set": output_gene_set,
+        "gene_set_source_status": (
+            artifact.get("gene_set_source_status") if args.apply_artifact
+            else gs_info.get("source_status")
+        ),
         "configuration": result["configuration"],
         "control_genes": result["control_genes"],
         "samples": [
-            {"id": sample_id, f"{args.gene_set}_module_score": round(float(value), 4)}
+            {"id": sample_id, f"{output_gene_set}_module_score": round(float(value), 4)}
             for sample_id, value in zip(ids, result["scores"])
         ],
         "coverage": result["coverage"],

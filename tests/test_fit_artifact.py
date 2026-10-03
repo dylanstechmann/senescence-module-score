@@ -106,6 +106,8 @@ class FitArtifactTests(unittest.TestCase):
             self.assertTrue(artifact_path.exists())
             artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
             self.assertEqual(artifact["training_sample_ids"], self.sample_ids[:8])
+            self.assertEqual(artifact["gene_set_source_status"], "published_gene_set")
+            self.assertEqual(fit_payload["gene_set_source_status"], "published_gene_set")
             self.assertEqual(fit_payload["training_sample_ids_sha256"], artifact["training_sample_ids_sha256"])
 
             applied_output = io.StringIO()
@@ -118,6 +120,8 @@ class FitArtifactTests(unittest.TestCase):
             actual = [row["senmayo_module_score"] for row in applied["samples"]]
             self.assertEqual(actual, expected)
             self.assertEqual(applied["fit_artifact_version"], 1)
+            self.assertEqual(applied["gene_set"], "senmayo")
+            self.assertEqual(applied["gene_set_source_status"], "published_gene_set")
 
 
 if __name__ == "__main__":

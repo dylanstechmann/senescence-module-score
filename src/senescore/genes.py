@@ -59,6 +59,7 @@ GENE_SETS: dict[str, dict] = {
         "citation": CITATION,
         "description": "Human SenMayo 125-gene senescence signature (Saul et al. 2022)",
         "orthogonal": ORTHOGONAL,
+        "source_status": "published_gene_set",
     },
     "fridman": {
         "name": "Fridman Senescence",

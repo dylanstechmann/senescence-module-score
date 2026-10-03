@@ -190,6 +190,7 @@ def fit_module_score(
     citation: str = CITATION,
     *,
     gene_set_key: str | None = None,
+    gene_set_source_status: str | None = None,
     training_sample_ids: list[str] | None = None,
     training_input_sha256: str | None = None,
 ):
@@ -226,6 +227,7 @@ def fit_module_score(
         "format": FIT_ARTIFACT_FORMAT,
         "version": FIT_ARTIFACT_VERSION,
         "gene_set_key": gene_set_key,
+        "gene_set_source_status": gene_set_source_status,
         "signature": list(signature),
         "signature_sha256": _json_sha256(list(signature)),
         "feature_genes": list(names),
@@ -302,6 +304,9 @@ def validate_fit_artifact(artifact: dict) -> None:
         raise ScoreError("fit artifact coverage is invalid")
     if not isinstance(artifact.get("citation"), str) or not isinstance(artifact.get("method"), str):
         raise ScoreError("fit artifact citation or method metadata is invalid")
+    source_status = artifact.get("gene_set_source_status")
+    if source_status is not None and (not isinstance(source_status, str) or not source_status.strip()):
+        raise ScoreError("fit artifact gene set source status must be a nonblank string")
     training_ids = artifact.get("training_sample_ids")
     if training_ids is not None:
         if not isinstance(training_ids, list) or len(training_ids) != config["n_train_rows"]:
@@ -402,6 +407,7 @@ def module_score_train_only(
     citation: str = CITATION,
     *,
     gene_set_key: str | None = None,
+    gene_set_source_status: str | None = None,
     training_sample_ids: list[str] | None = None,
     training_input_sha256: str | None = None,
 ):
@@ -415,7 +421,8 @@ def module_score_train_only(
     artifact = fit_module_score(
         matrix, gene_names, signature, rows, seed=seed, n_ctrl=n_ctrl, n_bins=n_bins,
         block_from_controls=block_from_controls, orthogonal=orthogonal, citation=citation,
-        gene_set_key=gene_set_key, training_sample_ids=training_sample_ids,
+        gene_set_key=gene_set_key, gene_set_source_status=gene_set_source_status,
+        training_sample_ids=training_sample_ids,
         training_input_sha256=training_input_sha256,
     )
     result = transform_module_score(matrix, gene_names, artifact)
