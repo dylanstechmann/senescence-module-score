@@ -10,12 +10,14 @@ from pathlib import Path
 import numpy as np
 
 from senescore.cli import main
-from senescore.genes import CITATION, SENMAYO_HUMAN
+from senescore.genes import CITATION, FRIDMAN_SENESCENCE_DOWN, FRIDMAN_SENESCENCE_UP, SENMAYO_HUMAN
 from senescore.score import (
     ScoreError,
     fit_module_score,
+    fit_signed_fridman_score,
     module_score_train_only,
     transform_module_score,
+    transform_signed_fridman_score,
     validate_fit_artifact,
 )
 from senescore.synthetic import spiked_cohort
@@ -85,6 +87,138 @@ class FitArtifactTests(unittest.TestCase):
         broken["control_genes"][gene] = ["NOT_A_FEATURE"]
         with self.assertRaisesRegex(ScoreError, "invalid controls"):
             validate_fit_artifact(broken)
+
+    def test_signed_fridman_artifact_keeps_directional_fit_and_is_train_only(self):
+        rng = np.random.default_rng(19)
+        genes = list(FRIDMAN_SENESCENCE_UP + FRIDMAN_SENESCENCE_DOWN) + [f"BG{i}" for i in range(180)]
+        matrix = rng.uniform(1.0, 5.0, size=(12, len(genes)))
+        # Test data carry a clear UP and DOWN directional shift; no claims about biology.
+        index = {gene: i for i, gene in enumerate(genes)}
+        matrix[8:, [index[gene] for gene in FRIDMAN_SENESCENCE_UP]] += 2.0
+        matrix[8:, [index[gene] for gene in FRIDMAN_SENESCENCE_DOWN]] -= 1.0
+        fit = fit_signed_fridman_score(
+            matrix, genes, np.arange(8), seed=5, n_ctrl=3, n_bins=10,
+            training_sample_ids=self.sample_ids[:8], training_input_sha256="a" * 64,
+        )
+        result = transform_signed_fridman_score(matrix, genes, fit)
+        np.testing.assert_allclose(result["scores"], result["up_scores"] - result["down_scores"])
+        self.assertEqual(result["up_coverage"], 1.0)
+        self.assertEqual(result["down_coverage"], 1.0)
+        self.assertEqual(fit["up_fit"]["gene_set_key"], "fridman_up")
+        self.assertEqual(fit["down_fit"]["gene_set_key"], "fridman_down")
+
+        changed = matrix.copy()
+        changed[8:, :] *= 100
+        second = fit_signed_fridman_score(
+            changed, genes, np.arange(8), seed=5, n_ctrl=3, n_bins=10,
+            training_sample_ids=self.sample_ids[:8], training_input_sha256="a" * 64,
+        )
+        self.assertEqual(fit, second)
+
+        broken = json.loads(json.dumps(fit))
+        broken["up_fit"]["signature"][0] = "COL3A1"
+        with self.assertRaisesRegex(ScoreError, "invalid fridman_up component"):
+            transform_signed_fridman_score(matrix, genes, broken)
+
+    def test_signed_fit_requires_60_percent_coverage_on_each_direction(self):
+        rng = np.random.default_rng(324)
+        for up, down in ((FRIDMAN_SENESCENCE_UP[:45], FRIDMAN_SENESCENCE_DOWN),
+                         (FRIDMAN_SENESCENCE_UP, FRIDMAN_SENESCENCE_DOWN[:7])):
+            genes = list(up + down) + [f"BG{i}" for i in range(200)]
+            matrix = rng.uniform(1, 4, size=(10, len(genes)))
+            with self.subTest(up=len(up), down=len(down)), self.assertRaisesRegex(ScoreError, "signature is in the table"):
+                fit_signed_fridman_score(matrix, genes, list(range(6)), n_bins=10)
+
+    def test_signed_fit_rejects_mixed_training_references_and_signature_controls(self):
+        rng = np.random.default_rng(75)
+        genes = list(FRIDMAN_SENESCENCE_UP + FRIDMAN_SENESCENCE_DOWN) + [f"BG{i}" for i in range(150)]
+        matrix = rng.uniform(1, 4, size=(10, len(genes)))
+        fitted = fit_signed_fridman_score(matrix, genes, list(range(6)), n_bins=10)
+        # Metadata is optional for Python callers: a fit without a CSV hash can apply.
+        transform_signed_fridman_score(matrix, genes, fitted)
+        other = fit_signed_fridman_score(matrix, genes, list(range(2, 8)), n_bins=10)
+        mixed = json.loads(json.dumps(fitted))
+        mixed["down_fit"] = other["down_fit"]
+        with self.assertRaisesRegex(ScoreError, "components disagree"):
+            transform_signed_fridman_score(matrix, genes, mixed)
+        broken = json.loads(json.dumps(fitted))
+        broken["training_input_sha256"] = "b" * 64
+        with self.assertRaisesRegex(ScoreError, "wrapper disagrees"):
+            transform_signed_fridman_score(matrix, genes, broken)
+        broken = json.loads(json.dumps(fitted))
+        first = next(iter(broken["up_fit"]["control_genes"]))
+        broken["up_fit"]["control_genes"][first] = [FRIDMAN_SENESCENCE_DOWN[0]]
+        with self.assertRaisesRegex(ScoreError, "directional signature genes"):
+            transform_signed_fridman_score(matrix, genes, broken)
+
+    def test_fit_artifact_rejects_false_coverage_missing_metadata_and_invalid_controls(self):
+        artifact = fit_module_score(self.matrix, self.genes, SENMAYO_HUMAN, self.train_rows, n_bins=10)
+        for field, value, expected in (
+            ("coverage", 0.2, "coverage"),
+            ("missing", ["FAKE"], "missing-gene"),
+        ):
+            broken = json.loads(json.dumps(artifact))
+            broken[field] = value
+            with self.subTest(field=field), self.assertRaisesRegex(ScoreError, expected):
+                transform_module_score(self.matrix, self.genes, broken)
+        gene = next(iter(artifact["control_genes"]))
+        for controls in ([gene], [artifact["control_genes"][gene][0]] * 2):
+            broken = json.loads(json.dumps(artifact))
+            broken["control_genes"][gene] = controls
+            with self.subTest(controls=controls), self.assertRaisesRegex(ScoreError, "invalid controls"):
+                validate_fit_artifact(broken)
+
+    def test_compare_training_scores_and_controls_ignore_held_out_changes(self):
+        rng = np.random.default_rng(633)
+        signature = list(dict.fromkeys(SENMAYO_HUMAN + FRIDMAN_SENESCENCE_UP))
+        genes = signature + [f"BG{i}" for i in range(350)]
+        matrix = rng.uniform(1, 4, size=(10, len(genes)))
+        ids = [f"s-{i}" for i in range(10)]
+        with tempfile.TemporaryDirectory() as temp:
+            expression = Path(temp) / "expression.csv"
+            sample_file = Path(temp) / "train.txt"
+            sample_file.write_text("\n".join(ids[:6]), encoding="utf-8")
+            def compare(values):
+                _write_expression(expression, ids, genes, values)
+                output = io.StringIO()
+                with redirect_stdout(output):
+                    main(["compare", str(expression), "--train-samples", str(sample_file), "--bins", "10"])
+                return json.loads(output.getvalue())
+            first = compare(matrix)
+            changed = matrix.copy()
+            changed[6:] *= 100
+            second = compare(changed)
+        self.assertEqual(first["comparison"]["set_b"]["key"], "fridman_up")
+        self.assertEqual(first["controls_fit_on"], "train_rows_only")
+        self.assertEqual(first["training_sample_ids"], ids[:6])
+        self.assertEqual(first["control_genes"], second["control_genes"])
+        self.assertEqual(first["samples"][:6], second["samples"][:6])
+
+    def test_signed_fridman_cli_round_trip(self):
+        rng = np.random.default_rng(27)
+        genes = list(FRIDMAN_SENESCENCE_UP + FRIDMAN_SENESCENCE_DOWN) + [f"BG{i}" for i in range(150)]
+        matrix = rng.uniform(1.0, 4.0, size=(8, len(genes)))
+        with tempfile.TemporaryDirectory() as temp:
+            expression = Path(temp) / "expression.csv"
+            sample_file = Path(temp) / "train.txt"
+            artifact_file = Path(temp) / "fit.json"
+            _write_expression(expression, [f"sample-{i}" for i in range(8)], genes, matrix)
+            sample_file.write_text("\n".join(f"sample-{i}" for i in range(6)), encoding="utf-8")
+            first = io.StringIO()
+            with redirect_stdout(first):
+                self.assertEqual(main(["fridman-signed", str(expression), "--train-samples", str(sample_file),
+                                       "--fit-artifact", str(artifact_file), "--controls", "3", "--bins", "10"]), 0)
+            initial = json.loads(first.getvalue())
+            second = io.StringIO()
+            with redirect_stdout(second):
+                self.assertEqual(main(["fridman-signed", str(expression), "--apply-artifact", str(artifact_file)]), 0)
+            applied = json.loads(second.getvalue())
+            self.assertEqual(initial["gene_set_source_status"], "published_gene_set")
+            self.assertEqual(initial["samples"], applied["samples"])
+            self.assertEqual(initial["training_sample_ids"], [f"sample-{i}" for i in range(6)])
+            self.assertEqual(initial["feature_schema_sha256"], applied["feature_schema_sha256"])
+            self.assertEqual(applied["fit_artifact_hash_basis"], "file_bytes")
+            self.assertEqual(applied["fit_artifact_sha256"], hashlib.sha256(artifact_file.read_bytes()).hexdigest())
 
     def test_registered_gene_set_provenance_is_bound_to_signature_and_citation(self):
         artifact = fit_module_score(

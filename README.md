@@ -26,21 +26,33 @@ make test
 PYTHONPATH=src python3 -m senescore.cli demo
 PYTHONPATH=src python3 -m senescore.cli score path/to/expression.csv --gene-set senmayo
 PYTHONPATH=src python3 -m senescore.cli score path/to/expression.csv --gene-set fridman
-PYTHONPATH=src python3 -m senescore.cli compare path/to/expression.csv --set-a senmayo --set-b fridman
+PYTHONPATH=src python3 -m senescore.cli compare path/to/expression.csv --set-a senmayo --set-b fridman_up --train-samples train_ids.txt
 ```
 
 CSV shape: a header row of gene symbols, and a sample id in column 1. Values should already be on a log-expression scale. If fewer than 60% of the chosen gene set is present, scoring refuses to invent the rest.
 
 Supported gene sets:
 - `senmayo`: Human SenMayo 125-gene signature (Saul et al. 2022)
-- `fridman`: custom 66-gene panel inspired by senescence literature; not a source-transcribed Fridman signature
+- `fridman`: legacy custom 66-gene panel; membership/direction are unverified
+- `fridman_up`, `fridman_down`: source-pinned MSigDB C2 release 2025.1.Hs transcriptions of FRIDMAN_SENESCENCE_UP (77 genes, M9143) and FRIDMAN_SENESCENCE_DN (13 genes, M9487), both mapped to Fridman & Tainsky Table 2S. MSigDB content is CC BY 4.0; directional records include source-line hashes and are checked against the bundled two-line GMT snapshot. Their symbols and raw release snapshot match the Regen Workbench vendored copies.
+- `fridman-signed`: compute the UP control-subtracted score minus the independently scored DOWN set. Use training-only fitting and apply the same frozen gene schema to later batches:
+
+```bash
+senescore fridman-signed expression.csv --train-samples train_ids.txt --fit-artifact fridman-fit.json
+senescore fridman-signed followup.csv --apply-artifact fridman-fit.json
+```
+
 - `sasp`: custom 55-gene SASP-oriented panel; not a source-transcribed Coppé signature
+
+The signed output is a directional expression score, not the original source study's analysis procedure and not an independently validated senescence assay. The Coppé study measured context-specific secreted proteins; this repository does not claim its custom SASP panel is a single canonical source signature.
 
 Python 3.10+ and numpy.
 
 ## License
 
-MIT. The gene set is the published SenMayo list; the paper remains the citation for the set.
+Software: MIT. SenMayo uses its published list and retains its paper citation.
+The bundled MSigDB Fridman data use CC BY 4.0, as detailed in
+[DATA_SOURCES.md](DATA_SOURCES.md).
 
 ## Traceable scoring (v0.2)
 
@@ -95,3 +107,28 @@ scores comparable across independently collected cohorts or establish a
 senescence diagnosis.
 Training-row indexes must be distinct integers within the table; fractional
 indexes are refused rather than silently truncated.
+
+## Audit follow-up — 2026-10-04
+
+The Fridman UP/DN additions are retained and packaged with their pinned GMT
+snapshot, including in wheels. The signed artifact now rejects mixing
+directional components fitted on different training references, disagreement
+with its wrapper, controls drawn from either directional set, inconsistent
+coverage/missing-gene metadata, and duplicated controls. Each directional set
+still independently requires at least 60% coverage.
+
+Signed JSON carries the fitted reference IDs, schema hash, source metadata,
+controls-fit basis and artifact hash. A fitting response hashes canonical JSON;
+an apply response hashes the exact saved artifact bytes and labels that basis.
+`compare --train-samples train_ids.txt` now fits both panels on those rows and
+reports both control maps; its second-panel default is the source-pinned
+`fridman_up` rather than the historical custom panel. Use an explicit
+`--set-b fridman` to reproduce the old comparison. These are expression
+contrasts and software checks; independent tissue/cell-type validation against
+senescence and functional endpoints remains necessary.
+
+Validation: **33 unittest cases** pass, including directional minimum coverage,
+mixed-reference rejection and training-only comparisons. The installed-wheel
+smoke check succeeds outside the source checkout. The seed-0 demo reports
+SenMayo d=34.903 versus random-set d=0.294. These are synthetic software results.
+See [data-source provenance and licensing](DATA_SOURCES.md).

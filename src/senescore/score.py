@@ -12,7 +12,12 @@ import json
 
 import numpy as np
 
-from senescore.genes import CITATION, GENE_SETS, ORTHOGONAL, SENMAYO_HUMAN
+from senescore.genes import (
+    CITATION,
+    FRIDMAN_SIGNED_CITATION,
+    GENE_SETS,
+    ORTHOGONAL,
+)
 
 
 class ScoreError(ValueError):
@@ -21,6 +26,10 @@ class ScoreError(ValueError):
 
 FIT_ARTIFACT_FORMAT = "senescore-module-score-fit"
 FIT_ARTIFACT_VERSION = 1
+
+
+SIGNED_FIT_ARTIFACT_FORMAT = "senescore-signed-module-score-fit"
+SIGNED_FIT_ARTIFACT_VERSION = 1
 
 
 def _json_sha256(value) -> str:
@@ -281,6 +290,102 @@ def fit_module_score(
     return artifact
 
 
+def fit_signed_fridman_score(
+    matrix: np.ndarray,
+    gene_names: list[str],
+    train_rows,
+    seed: int = 0,
+    n_ctrl: int = 5,
+    n_bins: int = 20,
+    training_sample_ids: list[str] | None = None,
+    training_input_sha256: str | None = None,
+) -> dict:
+    """Fit independent UP/DN control references on training rows only."""
+    from senescore.genes import FRIDMAN_SENESCENCE_DOWN, FRIDMAN_SENESCENCE_UP
+
+    up = fit_module_score(
+        matrix, gene_names, FRIDMAN_SENESCENCE_UP, train_rows, seed, n_ctrl, n_bins,
+        block_from_controls=set(FRIDMAN_SENESCENCE_UP) | set(FRIDMAN_SENESCENCE_DOWN),
+        orthogonal=(), citation=FRIDMAN_SIGNED_CITATION,
+        gene_set_key="fridman_up", gene_set_source_status="published_gene_set",
+        training_sample_ids=training_sample_ids, training_input_sha256=training_input_sha256,
+    )
+    down = fit_module_score(
+        matrix, gene_names, FRIDMAN_SENESCENCE_DOWN, train_rows, seed, n_ctrl, n_bins,
+        block_from_controls=set(FRIDMAN_SENESCENCE_UP) | set(FRIDMAN_SENESCENCE_DOWN),
+        orthogonal=(), citation=FRIDMAN_SIGNED_CITATION,
+        gene_set_key="fridman_down", gene_set_source_status="published_gene_set",
+        training_sample_ids=training_sample_ids, training_input_sha256=training_input_sha256,
+    )
+    return {
+        "format": SIGNED_FIT_ARTIFACT_FORMAT,
+        "version": SIGNED_FIT_ARTIFACT_VERSION,
+        "method": "independent control-subtracted MSigDB FRIDMAN_SENESCENCE_UP score minus FRIDMAN_SENESCENCE_DN score",
+        "citation": FRIDMAN_SIGNED_CITATION,
+        "training_sample_ids": list(training_sample_ids) if training_sample_ids is not None else None,
+        "training_input_sha256": training_input_sha256,
+        "up_fit": up,
+        "down_fit": down,
+    }
+
+
+def transform_signed_fridman_score(matrix: np.ndarray, gene_names: list[str], artifact: dict) -> dict:
+    """Apply independent frozen Fridman UP and DN fit artifacts."""
+    if (not isinstance(artifact, dict) or artifact.get("format") != SIGNED_FIT_ARTIFACT_FORMAT
+            or artifact.get("version") != SIGNED_FIT_ARTIFACT_VERSION
+            or artifact.get("citation") != FRIDMAN_SIGNED_CITATION):
+        raise ScoreError("invalid signed Fridman fit-artifact metadata")
+    from senescore.genes import FRIDMAN_SENESCENCE_DOWN, FRIDMAN_SENESCENCE_UP
+
+    up_fit, down_fit = artifact.get("up_fit"), artifact.get("down_fit")
+    if not isinstance(up_fit, dict) or not isinstance(down_fit, dict):
+        raise ScoreError("signed Fridman fit artifact is missing an UP or DOWN fit")
+    if artifact.get("method") != (
+        "independent control-subtracted MSigDB FRIDMAN_SENESCENCE_UP score minus "
+        "FRIDMAN_SENESCENCE_DN score"
+    ):
+        raise ScoreError("signed Fridman fit artifact method is invalid")
+    _validate_signed_component(up_fit, "fridman_up", FRIDMAN_SENESCENCE_UP)
+    _validate_signed_component(down_fit, "fridman_down", FRIDMAN_SENESCENCE_DOWN)
+    # Both directional components must use the same training reference. Individually
+    # valid components from different cohorts are not a valid signed fit.
+    for field in ("feature_genes", "feature_schema_sha256", "training_rows",
+                  "training_sample_ids", "training_sample_ids_sha256",
+                  "training_input_sha256", "configuration"):
+        if up_fit.get(field) != down_fit.get(field):
+            raise ScoreError(f"signed Fridman components disagree on {field}")
+    for field in ("training_sample_ids", "training_input_sha256"):
+        if artifact.get(field) != up_fit.get(field):
+            raise ScoreError(f"signed Fridman wrapper disagrees on {field}")
+    blocked = set(FRIDMAN_SENESCENCE_UP) | set(FRIDMAN_SENESCENCE_DOWN)
+    for component in (up_fit, down_fit):
+        if any(blocked.intersection(selected) for selected in component["control_genes"].values()):
+            raise ScoreError("signed Fridman controls contain directional signature genes")
+    up = transform_module_score(matrix, gene_names, up_fit)
+    down = transform_module_score(matrix, gene_names, down_fit)
+    return {
+        "up_scores": up["scores"],
+        "down_scores": down["scores"],
+        "scores": signed_direction_score(up["scores"], down["scores"]),
+        "up_coverage": up["coverage"],
+        "down_coverage": down["coverage"],
+        "up_missing": up["missing"],
+        "down_missing": down["missing"],
+        "citation": FRIDMAN_SIGNED_CITATION,
+        "method": artifact["method"],
+    }
+
+
+def _validate_signed_component(artifact: dict, key: str, signature) -> None:
+    """Validate a signed-fit component is exactly its registered directional set."""
+    if (artifact.get("gene_set_key") != key
+            or artifact.get("gene_set_source_status") != "published_gene_set"
+            or artifact.get("citation") != FRIDMAN_SIGNED_CITATION
+            or artifact.get("signature") != list(signature)):
+        raise ScoreError(f"signed Fridman fit artifact has an invalid {key} component")
+    validate_fit_artifact(artifact)
+
+
 def validate_fit_artifact(artifact: dict) -> None:
     """Reject unsupported, corrupted, or internally inconsistent fit artifacts."""
     if not isinstance(artifact, dict) or artifact.get("format") != FIT_ARTIFACT_FORMAT:
@@ -308,11 +413,18 @@ def validate_fit_artifact(artifact: dict) -> None:
         raise ScoreError("fit artifact orthogonal gene symbols must be nonempty strings")
     if len(orthogonal_genes) != len(set(orthogonal_genes)):
         raise ScoreError("fit artifact orthogonal gene symbols must be unique")
+    if any(isinstance(config.get(key), bool) or not isinstance(config.get(key), int)
+           or config[key] <= 0 for key in ("n_ctrl", "n_bins", "n_train_rows")):
+        raise ScoreError("fit artifact configuration is invalid")
     present = [gene for gene in signature if gene in set(features)]
     if set(controls) != set(present):
         raise ScoreError("fit artifact controls do not match the present signature genes")
     for gene, selected in controls.items():
-        if not isinstance(selected, list) or not selected or any(item not in features for item in selected):
+        if (not isinstance(selected, list) or not selected
+                or any(not isinstance(item, str) or item not in features for item in selected)
+                or len(selected) != len(set(selected))
+                or set(selected).intersection(signature)
+                or len(selected) > config.get("n_ctrl", 0)):
             raise ScoreError(f"fit artifact has invalid controls for {gene}")
     for gene, reference in orthogonal_reference.items():
         if gene not in features or gene not in orthogonal_genes or not isinstance(reference, list) or len(reference) != 2:
@@ -327,12 +439,16 @@ def validate_fit_artifact(artifact: dict) -> None:
             or any(isinstance(row, bool) or not isinstance(row, int) or row < 0 for row in training_rows)
             or len(training_rows) != len(set(training_rows))):
         raise ScoreError("fit artifact training row metadata is invalid")
-    if any(isinstance(config.get(key), bool) or not isinstance(config.get(key), int) or config[key] <= 0
-           for key in ("n_ctrl", "n_bins", "n_train_rows")):
-        raise ScoreError("fit artifact configuration is invalid")
+    expected_coverage = len(present) / len(signature)
     coverage = artifact.get("coverage")
-    if isinstance(coverage, bool) or not isinstance(coverage, (int, float)) or not 0 < coverage <= 1:
-        raise ScoreError("fit artifact coverage is invalid")
+    if (isinstance(coverage, bool) or not isinstance(coverage, (int, float))
+            or expected_coverage < 0.6 or coverage != expected_coverage):
+        raise ScoreError("fit artifact coverage is invalid or below the 60% minimum")
+    expected_missing = [gene for gene in signature if gene not in set(features)]
+    if artifact.get("missing") != expected_missing:
+        raise ScoreError("fit artifact missing-gene metadata is inconsistent")
+    if config["n_train_rows"] < 2:
+        raise ScoreError("fit artifact needs at least two training rows")
     if (not isinstance(artifact.get("citation"), str) or not artifact["citation"].strip()
             or not isinstance(artifact.get("method"), str) or not artifact["method"].strip()):
         raise ScoreError("fit artifact citation or method metadata is invalid")
@@ -429,6 +545,21 @@ def module_score(
         "citation": citation,
         "method": "control-gene module score; not the GSEA procedure in Saul et al. 2022",
     }
+
+
+def signed_direction_score(up_scores, down_scores):
+    """Combine direction-aware senescence scores as UP minus DOWN.
+
+    Each side must already be independently scored against its own control genes.
+    Positive values mean the combined signed contrast points in the published
+    senescence direction; the number is not a diagnostic or validated assay.
+    """
+    up = np.asarray(up_scores, dtype=float)
+    down = np.asarray(down_scores, dtype=float)
+    if (up.ndim != 1 or down.ndim != 1 or len(up) == 0 or len(up) != len(down)
+            or not np.isfinite(up).all() or not np.isfinite(down).all()):
+        raise ScoreError("signed Fridman scoring requires equal-length finite one-dimensional score vectors")
+    return up - down
 
 
 def module_score_train_only(

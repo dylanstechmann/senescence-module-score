@@ -9,13 +9,23 @@ from unittest.mock import patch
 import numpy as np
 
 from senescore.cli import bakeoff, main as cli_main
-from senescore.genes import FRIDMAN_SENESCENCE, GENE_SETS, ORTHOGONAL, SASP_COPPE, SENMAYO_HUMAN, get_gene_set
+from senescore.genes import (
+    FRIDMAN_SENESCENCE,
+    FRIDMAN_SENESCENCE_DOWN,
+    FRIDMAN_SENESCENCE_UP,
+    GENE_SETS,
+    ORTHOGONAL,
+    SASP_COPPE,
+    SENMAYO_HUMAN,
+    get_gene_set,
+)
 from senescore.io import read_expression_csv
 from senescore.score import (
     ScoreError,
     module_score,
     pearson_correlation,
     spearman_correlation,
+    signed_direction_score,
 )
 from senescore.synthetic import spiked_cohort
 
@@ -38,8 +48,59 @@ class ScoreTests(unittest.TestCase):
         self.assertEqual(get_gene_set("fridman")["source_status"], "custom_unverified")
         self.assertEqual(get_gene_set("sasp")["source_status"], "custom_unverified")
         self.assertEqual(get_gene_set("senmayo")["source_status"], "published_gene_set")
+        self.assertEqual(len(FRIDMAN_SENESCENCE_UP), 77)
+        self.assertEqual(len(FRIDMAN_SENESCENCE_DOWN), 13)
+        self.assertEqual(get_gene_set("fridman_up")["systematic_id"], "M9143")
+        self.assertEqual(get_gene_set("fridman_down")["systematic_id"], "M9487")
+        self.assertIn("COL3A1", FRIDMAN_SENESCENCE_DOWN)
+        self.assertIn("EGR1", FRIDMAN_SENESCENCE_DOWN)
+        self.assertNotIn("COL3A1", FRIDMAN_SENESCENCE_UP)
+        self.assertNotIn("EGR1", FRIDMAN_SENESCENCE_UP)
+        self.assertEqual(get_gene_set("fridman_up")["source_status"], "published_gene_set")
+        self.assertEqual(get_gene_set("fridman_down")["source_status"], "published_gene_set")
         with self.assertRaises(KeyError):
             get_gene_set("unknown_set")
+
+    def test_signed_direction_score_subtracts_down_from_up(self):
+        np.testing.assert_array_equal(signed_direction_score([3, -1], [1, 2]), [2, -3])
+        for up, down in [([1], []), ([1, np.nan], [1, 2]), ([[1]], [[1]])]:
+            with self.subTest(up=up, down=down), self.assertRaises(ScoreError):
+                signed_direction_score(up, down)
+
+    def test_synthetic_quiescence_and_proliferation_spikes_do_not_mimic_signature_spike(self):
+        rng = np.random.default_rng(881)
+        quiescence = [f"QUIESCENCE_FIXTURE_{i}" for i in range(8)]
+        proliferation = [f"PROLIFERATION_FIXTURE_{i}" for i in range(8)]
+        genes = list(SENMAYO_HUMAN) + quiescence + proliferation + [f"BG{i}" for i in range(300)]
+        gene_means = rng.uniform(2.0, 4.0, size=len(genes))
+        matrix = gene_means[None, :] + rng.normal(0.0, 0.08, size=(40, len(genes)))
+        index = {gene: i for i, gene in enumerate(genes)}
+        groups = {
+            "reference": np.arange(0, 10),
+            "quiescence_only": np.arange(10, 20),
+            "proliferation_only": np.arange(20, 30),
+            "senmayo_spike": np.arange(30, 40),
+        }
+        for rows, fixture_signature in ((groups["quiescence_only"], quiescence),
+                                        (groups["proliferation_only"], proliferation),
+                                        (groups["senmayo_spike"], SENMAYO_HUMAN)):
+            matrix[np.ix_(rows, [index[g] for g in fixture_signature])] += 2.0
+        background_positions = [index[f"BG{i}"] for i in range(300)]
+        matrix[np.ix_(groups["quiescence_only"], background_positions)] += 0.1
+        matrix[np.ix_(groups["proliferation_only"], background_positions)] -= 0.1
+        result = module_score(
+            matrix,
+            genes,
+            SENMAYO_HUMAN,
+            seed=5,
+            n_ctrl=5,
+            n_bins=10,
+            block_from_controls=set(SENMAYO_HUMAN) | set(quiescence) | set(proliferation),
+        )
+        means = {name: float(result["scores"][rows].mean()) for name, rows in groups.items()}
+        self.assertGreater(means["senmayo_spike"], means["reference"] + 1.0)
+        self.assertLess(abs(means["quiescence_only"] - means["reference"]), 0.5)
+        self.assertLess(abs(means["proliferation_only"] - means["reference"]), 0.5)
 
     def test_spike_beats_a_random_gene_set(self):
         report = bakeoff(0)

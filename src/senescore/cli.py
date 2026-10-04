@@ -11,11 +11,13 @@ from senescore.io import read_expression_csv_with_hash
 from senescore.score import (
     ScoreError,
     cohen_d,
+    fit_signed_fridman_score,
     module_score,
     module_score_train_only,
     pearson_correlation,
     random_signature,
     spearman_correlation,
+    transform_signed_fridman_score,
     transform_module_score,
     validate_fit_artifact,
 )
@@ -58,11 +60,23 @@ def main(argv=None) -> int:
     compare.add_argument("csv")
     compare.add_argument("--set-a", default="senmayo", choices=sorted(GENE_SETS.keys()),
                          help="first gene panel (default: senmayo)")
-    compare.add_argument("--set-b", default="fridman", choices=sorted(GENE_SETS.keys()),
-                         help="second gene panel (default: fridman)")
+    compare.add_argument("--set-b", default="fridman_up", choices=sorted(GENE_SETS.keys()),
+                         help="second gene panel (default: fridman_up)")
     compare.add_argument("--seed", type=int, default=0)
     compare.add_argument("--controls", type=int, default=5)
     compare.add_argument("--bins", type=int, default=20)
+    compare.add_argument("--train-samples", help="sample IDs used to fit both panels' controls")
+
+    signed = sub.add_parser(
+        "fridman-signed", help="score source-pinned Fridman UP minus DN gene sets"
+    )
+    signed.add_argument("csv")
+    signed.add_argument("--train-samples", help="sample IDs used to fit controls; required when fitting")
+    signed.add_argument("--fit-artifact", help="write the frozen signed fit artifact")
+    signed.add_argument("--apply-artifact", help="apply a frozen signed fit artifact")
+    signed.add_argument("--seed", type=int, default=0)
+    signed.add_argument("--controls", type=int, default=5)
+    signed.add_argument("--bins", type=int, default=20)
 
     args = parser.parse_args(argv)
 
@@ -71,25 +85,95 @@ def main(argv=None) -> int:
         sys.stdout.write("\n")
         return 0
 
+    if args.cmd == "fridman-signed":
+        if args.apply_artifact and (args.train_samples or args.fit_artifact):
+            parser.error("--apply-artifact cannot be combined with --train-samples or --fit-artifact")
+        if args.fit_artifact and not args.train_samples:
+            parser.error("--fit-artifact requires --train-samples")
+        if not args.apply_artifact and not args.train_samples:
+            parser.error("fridman-signed requires --train-samples when fitting")
+        try:
+            ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(args.csv)
+            if args.apply_artifact:
+                artifact_bytes = Path(args.apply_artifact).read_bytes()
+                artifact = json.loads(artifact_bytes)
+            else:
+                wanted = [line.strip() for line in Path(args.train_samples).read_text(encoding="utf-8").splitlines() if line.strip()]
+                lookup = {sample: i for i, sample in enumerate(ids)}
+                if not wanted or len(wanted) != len(set(wanted)) or any(sample not in lookup for sample in wanted):
+                    raise ScoreError("training sample ids must be nonempty, unique, and present in the expression table")
+                artifact = fit_signed_fridman_score(
+                    matrix, genes, [lookup[sample] for sample in wanted], seed=args.seed,
+                    n_ctrl=args.controls, n_bins=args.bins, training_sample_ids=wanted,
+                    training_input_sha256=input_sha256,
+                )
+                if args.fit_artifact:
+                    Path(args.fit_artifact).write_text(
+                        json.dumps(artifact, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+                    )
+            result = transform_signed_fridman_score(matrix, genes, artifact)
+        except (ScoreError, OSError, ValueError, json.JSONDecodeError) as exc:
+            parser.error(str(exc))
+        payload = {
+            "input_sha256": input_sha256,
+            "gene_set": "fridman_signed",
+            "gene_set_source_status": "published_gene_set",
+            "citation": result["citation"],
+            "method": result["method"],
+            "coverage": {"up": result["up_coverage"], "down": result["down_coverage"]},
+            "fit_artifact_version": artifact["version"],
+            "fit_artifact_sha256": hashlib.sha256(
+                artifact_bytes if args.apply_artifact else
+                json.dumps(artifact, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+            ).hexdigest(),
+            "fit_artifact_hash_basis": "file_bytes" if args.apply_artifact else "canonical_json",
+            "feature_schema_sha256": artifact["up_fit"]["feature_schema_sha256"],
+            "training_sample_ids": artifact["training_sample_ids"],
+            "training_sample_ids_sha256": artifact["up_fit"]["training_sample_ids_sha256"],
+            "training_input_sha256": artifact["training_input_sha256"],
+            "configuration": artifact["up_fit"]["configuration"],
+            "controls_fit_on": "fit_artifact_training_rows" if args.apply_artifact else "train_rows_only",
+            "sources": {direction: {**GENE_SETS[key]["source"],
+                                   "normalized_membership_sha256": GENE_SETS[key]["normalized_membership_sha256"]}
+                        for direction, key in (("up", "fridman_up"), ("down", "fridman_down"))},
+            "missing": {"up": result["up_missing"], "down": result["down_missing"]},
+            "samples": [
+                {"id": sample_id, "up_score": float(up), "down_score": float(down), "signed_score": float(score)}
+                for sample_id, up, down, score in zip(ids, result["up_scores"], result["down_scores"], result["scores"])
+            ],
+            "not": "A source-direction gene-set score, not a validated senescence assay, diagnosis, or rejuvenation endpoint.",
+        }
+        json.dump(payload, sys.stdout, indent=2, allow_nan=False)
+        sys.stdout.write("\n")
+        return 0
+
     if args.cmd == "compare":
         try:
             ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(args.csv)
             set_a_info = get_gene_set(args.set_a)
             set_b_info = get_gene_set(args.set_b)
-            res_a = module_score(
-                matrix, genes, set_a_info["symbols"],
-                seed=args.seed, n_ctrl=args.controls, n_bins=args.bins,
-                block_from_controls=set(set_a_info["symbols"]),
-                orthogonal=set_a_info["orthogonal"],
-                citation=set_a_info["citation"],
-            )
-            res_b = module_score(
-                matrix, genes, set_b_info["symbols"],
-                seed=args.seed, n_ctrl=args.controls, n_bins=args.bins,
-                block_from_controls=set(set_b_info["symbols"]),
-                orthogonal=set_b_info["orthogonal"],
-                citation=set_b_info["citation"],
-            )
+            train_kwargs = {}
+            scorer = module_score
+            if args.train_samples:
+                wanted = [line.strip() for line in Path(args.train_samples).read_text(encoding="utf-8").splitlines() if line.strip()]
+                lookup = {sample: i for i, sample in enumerate(ids)}
+                if not wanted or len(wanted) != len(set(wanted)) or any(sample not in lookup for sample in wanted):
+                    raise ScoreError("training sample ids must be nonempty, unique, and present in the expression table")
+                scorer = module_score_train_only
+                train_kwargs = {"train_rows": [lookup[sample] for sample in wanted],
+                                "training_sample_ids": wanted, "training_input_sha256": input_sha256}
+            def score_panel(info, key):
+                kwargs = dict(train_kwargs)
+                if args.train_samples:
+                    kwargs.update(gene_set_key=key, gene_set_source_status=info["source_status"])
+                return scorer(
+                    matrix, genes, info["symbols"], seed=args.seed,
+                    n_ctrl=args.controls, n_bins=args.bins,
+                    block_from_controls=set(info["symbols"]), orthogonal=info["orthogonal"],
+                    citation=info["citation"], **kwargs,
+                )
+            res_a = score_panel(set_a_info, args.set_a)
+            res_b = score_panel(set_b_info, args.set_b)
         except (ScoreError, OSError) as exc:
             parser.error(str(exc))
 
@@ -98,6 +182,12 @@ def main(argv=None) -> int:
 
         payload = {
             "input_sha256": input_sha256,
+            "controls_fit_on": "train_rows_only" if args.train_samples else "all_input_rows",
+            "training_sample_ids": wanted if args.train_samples else None,
+            "training_sample_ids_sha256": (
+                res_a["fit_artifact"]["training_sample_ids_sha256"] if args.train_samples else None
+            ),
+            "control_genes": {"set_a": res_a["control_genes"], "set_b": res_b["control_genes"]},
             "comparison": {
                 "set_a": {
                     "key": args.set_a,

@@ -1,0 +1,48 @@
+{
+  "set_id": "FRIDMAN_SENESCENCE_DN",
+  "systematic_id": "M9487",
+  "direction": "down",
+  "species": "Homo sapiens",
+  "symbols": [
+    "ALDH1A1",
+    "BMI1",
+    "CCN4",
+    "CCNB1",
+    "CDC25B",
+    "CKS1BP7",
+    "COL3A1",
+    "E2F4",
+    "EGR1",
+    "ID1",
+    "LAMA1",
+    "LDB2",
+    "MARCKS"
+  ],
+  "entrez_ids": [
+    "216",
+    "648",
+    "8840",
+    "891",
+    "994",
+    "137529",
+    "1281",
+    "1874",
+    "1958",
+    "3397",
+    "284217",
+    "9079",
+    "4082"
+  ],
+  "source": {
+    "provider": "MSigDB",
+    "collection": "C2: Curated Gene Sets / Chemical and Genetic Perturbations",
+    "release": "2025.1.Hs",
+    "source_publication": "Fridman AL, Tainsky MA. Critical pathways in cellular senescence and immortalization. Oncogene. 2008;27:5975-5987. DOI:10.1038/onc.2008.213",
+    "source_table": "Table 2S: senescent cells",
+    "url": "https://www.gsea-msigdb.org/gsea/msigdb/human/geneset/FRIDMAN_SENESCENCE_DN.html",
+    "raw_release_file": "c2.all.v2025.1.Hs.symbols.gmt",
+    "raw_line_sha256": "fb6892187bc864e2cbd96305fe7242421c0d725fe5f66374c012a6316917f102",
+    "license": "CC BY 4.0"
+  },
+  "normalized_membership_sha256": "fca6adc71cb6a33994dd99fc2c53eb498f55514d3b0352887eaa6506b9aeb3cd"
+}
