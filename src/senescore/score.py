@@ -12,7 +12,7 @@ import json
 
 import numpy as np
 
-from senescore.genes import CITATION, ORTHOGONAL, SENMAYO_HUMAN
+from senescore.genes import CITATION, GENE_SETS, ORTHOGONAL, SENMAYO_HUMAN
 
 
 class ScoreError(ValueError):
@@ -177,6 +177,34 @@ def _validate_train_rows(train_rows, n_rows):
     return rows
 
 
+def _validated_gene_set_provenance(gene_set_key, source_status, signature, citation):
+    """Bind fit-artifact labels to the registered signature they describe."""
+    if gene_set_key is None:
+        if source_status == "published_gene_set":
+            raise ScoreError("published gene-set status requires a registered gene_set_key")
+        if source_status not in (None, "custom_unverified"):
+            raise ScoreError("unregistered gene sets must be labeled custom_unverified")
+        return None, source_status
+    if not isinstance(gene_set_key, str) or not gene_set_key.strip():
+        raise ScoreError("fit artifact gene_set_key must be a nonblank string")
+
+    key = gene_set_key.strip().lower()
+    registered = GENE_SETS.get(key)
+    if registered is not None:
+        if list(signature) != list(registered["symbols"]):
+            raise ScoreError("fit artifact signature does not match its registered gene set")
+        expected_status = registered["source_status"]
+        if source_status not in (None, expected_status):
+            raise ScoreError("fit artifact source status conflicts with its registered gene set")
+        if citation != registered["citation"]:
+            raise ScoreError("fit artifact citation conflicts with its registered gene set")
+        return key, expected_status
+
+    if source_status not in (None, "custom_unverified"):
+        raise ScoreError("unregistered gene sets must be labeled custom_unverified")
+    return key, "custom_unverified"
+
+
 def fit_module_score(
     matrix: np.ndarray,
     gene_names: list[str],
@@ -196,6 +224,9 @@ def fit_module_score(
 ):
     """Fit and export the frozen controls and marker references for later batches."""
     matrix, names, signature = _validated_names(matrix, gene_names, signature, n_ctrl, n_bins)
+    gene_set_key, gene_set_source_status = _validated_gene_set_provenance(
+        gene_set_key, gene_set_source_status, signature, citation
+    )
     rows = _validate_train_rows(train_rows, len(matrix))
     if training_sample_ids is not None:
         if len(training_sample_ids) != len(rows) or any(not sample for sample in training_sample_ids):
@@ -302,11 +333,17 @@ def validate_fit_artifact(artifact: dict) -> None:
     coverage = artifact.get("coverage")
     if isinstance(coverage, bool) or not isinstance(coverage, (int, float)) or not 0 < coverage <= 1:
         raise ScoreError("fit artifact coverage is invalid")
-    if not isinstance(artifact.get("citation"), str) or not isinstance(artifact.get("method"), str):
+    if (not isinstance(artifact.get("citation"), str) or not artifact["citation"].strip()
+            or not isinstance(artifact.get("method"), str) or not artifact["method"].strip()):
         raise ScoreError("fit artifact citation or method metadata is invalid")
     source_status = artifact.get("gene_set_source_status")
     if source_status is not None and (not isinstance(source_status, str) or not source_status.strip()):
         raise ScoreError("fit artifact gene set source status must be a nonblank string")
+    _, expected_source_status = _validated_gene_set_provenance(
+        artifact.get("gene_set_key"), source_status, signature, artifact["citation"]
+    )
+    if source_status != expected_source_status:
+        raise ScoreError("fit artifact gene set source status is missing or inconsistent")
     training_ids = artifact.get("training_sample_ids")
     if training_ids is not None:
         if not isinstance(training_ids, list) or len(training_ids) != config["n_train_rows"]:

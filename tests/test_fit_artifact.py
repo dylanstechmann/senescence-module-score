@@ -10,9 +10,10 @@ from pathlib import Path
 import numpy as np
 
 from senescore.cli import main
-from senescore.genes import SENMAYO_HUMAN
+from senescore.genes import CITATION, SENMAYO_HUMAN
 from senescore.score import (
     ScoreError,
+    fit_module_score,
     module_score_train_only,
     transform_module_score,
     validate_fit_artifact,
@@ -84,6 +85,50 @@ class FitArtifactTests(unittest.TestCase):
         broken["control_genes"][gene] = ["NOT_A_FEATURE"]
         with self.assertRaisesRegex(ScoreError, "invalid controls"):
             validate_fit_artifact(broken)
+
+    def test_registered_gene_set_provenance_is_bound_to_signature_and_citation(self):
+        artifact = fit_module_score(
+            self.matrix, self.genes, SENMAYO_HUMAN, self.train_rows,
+            n_bins=10, gene_set_key="SeNMayo", gene_set_source_status="published_gene_set",
+            citation=CITATION,
+        )
+        self.assertEqual(artifact["gene_set_key"], "senmayo")
+        self.assertEqual(artifact["gene_set_source_status"], "published_gene_set")
+        validate_fit_artifact(artifact)
+        with self.assertRaisesRegex(ScoreError, "does not match its registered gene set"):
+            fit_module_score(self.matrix, self.genes, SENMAYO_HUMAN[:-1], self.train_rows,
+                             n_bins=10, gene_set_key="senmayo", citation=CITATION)
+        with self.assertRaisesRegex(ScoreError, "citation conflicts"):
+            fit_module_score(self.matrix, self.genes, SENMAYO_HUMAN, self.train_rows,
+                             n_bins=10, gene_set_key="senmayo", citation="unrelated citation")
+
+    def test_published_status_requires_registry_key_and_registered_status_cannot_be_custom(self):
+        with self.assertRaisesRegex(ScoreError, "requires a registered gene_set_key"):
+            fit_module_score(self.matrix, self.genes, SENMAYO_HUMAN, self.train_rows,
+                             n_bins=10, gene_set_source_status="published_gene_set", citation=CITATION)
+        with self.assertRaisesRegex(ScoreError, "conflicts with its registered"):
+            fit_module_score(self.matrix, self.genes, SENMAYO_HUMAN, self.train_rows,
+                             n_bins=10, gene_set_key="senmayo", gene_set_source_status="custom_unverified",
+                             citation=CITATION)
+
+    def test_unregistered_panel_is_labeled_custom_unverified_and_artifact_rejects_tampering(self):
+        signature = self.genes[:12]
+        artifact = fit_module_score(
+            self.matrix, self.genes, signature, self.train_rows, n_bins=10,
+            gene_set_key="local-panel-v1", citation="Local panel; source not verified.",
+        )
+        self.assertEqual(artifact["gene_set_source_status"], "custom_unverified")
+        validate_fit_artifact(artifact)
+        for field, value, message in (
+            ("gene_set_source_status", "published_gene_set", "unregistered gene sets"),
+            ("gene_set_key", None, "published gene-set status requires"),
+        ):
+            broken = dict(artifact)
+            broken[field] = value
+            if field == "gene_set_key":
+                broken["gene_set_source_status"] = "published_gene_set"
+            with self.subTest(field=field), self.assertRaisesRegex(ScoreError, message):
+                validate_fit_artifact(broken)
 
     def test_cli_exports_and_reuses_fit_artifact(self):
         with tempfile.TemporaryDirectory() as temp:
