@@ -31,3 +31,36 @@ The signed method computes independent control-subtracted UP and DOWN module
 scores, then subtracts DOWN from UP without z-standardization. It follows the
 database direction but is a project scoring procedure. Neither it nor the
 synthetic specificity checks establish biological senescence or rejuvenation.
+
+## Public expression check (2026-10-04)
+
+[GEO GSE268487](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE268487)
+supplies the actual human LF1 fibroblast count matrix for the first external
+check. Three deposited RNA-seq libraries per condition are labelled as
+proliferating, quiescent and senescent, with replicate numbers in GSM titles.
+Donor and experiment block IDs are absent and are kept null. The source record
+provides no dataset-specific license; public accessibility is not an MIT grant.
+The raw counts and full metadata are downloaded outside git.
+
+The linked [Dalgarno et al. 2025 preprint](https://pmc.ncbi.nlm.nih.gov/articles/PMC12262444/)
+has DOI 10.1101/2025.06.11.659151 and a CC BY-NC-ND 4.0 article license. This
+repository links to it and does not redistribute its text or figures. A
+post-SenMayo accession supports an external study check, not verified independent
+donors/laboratories or independent functional assay validation. LF1 is also used
+in older senescence studies; related models do not establish independent donors.
+
+Ensembl identifiers map through the actual HGNC complete-set snapshot retrieved
+on 2026-10-04. The committed gzip snapshot contains approved, unambiguous
+Ensembl-to-symbol pairs derived by `reduce_hgnc`; it has no expression values.
+Three ambiguous identifiers are omitted. HGNC imposes no reuse restrictions
+and requests attribution to **HUGO Gene Nomenclature Committee at the University
+of Cambridge**, [genenames.org](https://www.genenames.org/about/), RRID:SCR_002827.
+Current approved symbols are used without aliases; published panel members are
+not altered, so renamed legacy symbols can remain missing from custom panels.
+
+[sources.json](validation/GSE268487/sources.json) pins exact source URLs, byte
+counts, SHA-256 values, independence limits, factual metadata snapshot hashes,
+mapping hash and the unchanged prespecified plan hash. The actual count gzip
+SHA-256 is `ccf26d8b418f9c701c609195e6da0eb742accd5528e24d8811fb9f1fb6dc159a`.
+The [evaluation report](validation/GSE268487/REPORT.md) presents negative as well
+as positive results and explicitly records a discovered PAR_Y importer correction.

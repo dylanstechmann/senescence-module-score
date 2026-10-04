@@ -1,0 +1,46 @@
+{
+  "accession": "GSE268487",
+  "counts": {
+    "bytes": 649147,
+    "license": "No dataset-specific license specified by GEO; public access is not an MIT grant",
+    "sha256": "ccf26d8b418f9c701c609195e6da0eb742accd5528e24d8811fb9f1fb6dc159a",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE268nnn/GSE268487/suppl/GSE268487_pro_qui_sen_ft_counts.txt.gz"
+  },
+  "geo_metadata": {
+    "bytes": 13346163,
+    "sha256": "811de2c8034aafa3c76aceef0e583460611b2d69b5e51edf0e764d61bac10f68",
+    "snapshot": "samples.json extracts accession, title and selected factual metadata fields",
+    "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE268487&targ=all&form=text&view=full"
+  },
+  "hgnc": {
+    "attribution": "HUGO Gene Nomenclature Committee at the University of Cambridge; https://www.genenames.org/; RRID:SCR_002827",
+    "bytes": 16963116,
+    "excluded_ambiguous_ensembl_ids": [
+      "ENSG00000175658",
+      "ENSG00000230417",
+      "ENSG00000250413"
+    ],
+    "mapping_method": "Approved rows only; version-stripped Ensembl ID; current uppercase symbol; no aliases",
+    "n_unambiguous_mappings": 42497,
+    "reuse_policy_url": "https://www.genenames.org/about/",
+    "sha256": "2b4224ea847df2fc6982f5b2a52804c5d92fbb8810b134afb636f6029452dc03",
+    "url": "https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt"
+  },
+  "retrieved_date": "2026-10-04",
+  "snapshots": {
+    "PLAN.md": "b18d67bd7f8bb0e9e9b06efd320c6b6822fbe2dc7b80ae205057c1c789417685",
+    "hgnc_mapping.tsv.gz": "8c4c1714e1627be655d1358c4d4744e8db2d84af4d8076fd07fdffc949acadb2",
+    "samples.json": "7df5a26c7b8dc8343630df77e1d65454748b8d8b962368b7f55160002c84d54f"
+  },
+  "study": {
+    "bio_project": "PRJNA1117443",
+    "doi": "10.1101/2025.06.11.659151",
+    "publication_date": "2025-06-17",
+    "publication_license": "CC BY-NC-ND 4.0 (article); not asserted for separate GEO dataset",
+    "publication_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12262444/",
+    "series_public_date": "2025-07-31",
+    "series_submission_date": "2024-05-28",
+    "signature_independence": "Newly deposited RNA-seq study postdates SenMayo 2022 and Fridman/Tainsky 2008; no donor/lab independence established",
+    "status": "preprint version 1, not peer reviewed"
+  }
+}

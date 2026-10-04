@@ -1,0 +1,407 @@
+[
+  {
+    "accession": "GSM8291859",
+    "cell_line": "LF1",
+    "column": "pro1",
+    "condition": "proliferating",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 1,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: None"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570189",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725357"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, proliferating, replicate 1"
+  },
+  {
+    "accession": "GSM8291860",
+    "cell_line": "LF1",
+    "column": "pro2",
+    "condition": "proliferating",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 2,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: None"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570188",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725358"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, proliferating, replicate 2"
+  },
+  {
+    "accession": "GSM8291861",
+    "cell_line": "LF1",
+    "column": "pro3",
+    "condition": "proliferating",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 3,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: None"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570187",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725359"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, proliferating, replicate 3"
+  },
+  {
+    "accession": "GSM8291862",
+    "cell_line": "LF1",
+    "column": "qui1",
+    "condition": "quiescent",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 1,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: Contact Inhibition + Serum Starvation"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570186",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725360"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, quiescent, replicate 1"
+  },
+  {
+    "accession": "GSM8291863",
+    "cell_line": "LF1",
+    "column": "qui2",
+    "condition": "quiescent",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 2,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: Contact Inhibition + Serum Starvation"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570185",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725361"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, quiescent, replicate 2"
+  },
+  {
+    "accession": "GSM8291864",
+    "cell_line": "LF1",
+    "column": "qui3",
+    "condition": "quiescent",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 3,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: Contact Inhibition + Serum Starvation"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570184",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725362"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, quiescent, replicate 3"
+  },
+  {
+    "accession": "GSM8291865",
+    "cell_line": "LF1",
+    "column": "sen1",
+    "condition": "senescent",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 1,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: Replicative Exhaustion"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570183",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725363"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, senescent, replicate 1"
+  },
+  {
+    "accession": "GSM8291866",
+    "cell_line": "LF1",
+    "column": "sen2",
+    "condition": "senescent",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 2,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: Replicative Exhaustion"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570182",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725364"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, senescent, replicate 2"
+  },
+  {
+    "accession": "GSM8291867",
+    "cell_line": "LF1",
+    "column": "sen3",
+    "condition": "senescent",
+    "donor_id": null,
+    "experiment_block": null,
+    "reported_replicate": 3,
+    "source_fields": {
+      "!Sample_characteristics_ch1": [
+        "cell line: LF1",
+        "cell type: lung fibroblasts",
+        "genotype: WT",
+        "treatment: Replicative Exhaustion"
+      ],
+      "!Sample_data_processing": [
+        "The resulting fastqs were aligned to hg38 with STAR.",
+        "Features were counted with HTSeq and assessed for differential expression with EdgeR.",
+        "Replicates were checked using EdgeR\u2019s MDS function.",
+        "Assembly: hg38",
+        "Supplementary files format and content: pro_qui_sen_ft_counts.txt: feature counts",
+        "Supplementary files format and content: *_pro_out.txt: edgeR output"
+      ],
+      "!Sample_extract_protocol_ch1": [
+        "Total RNA for proliferating and RS samples (extracted using trizol) and cell pellets for quiescent cells were sent to Azenta. where libraries were prepared using a stranded ribosomal depletion method. The proliferating and RS cells were split across two HiSeq lanes. The quiescent cells were run on one HiSeq lane.",
+        "NEBNext\u00ae Ultra\u2122 II Directional RNA Library Prep Kit for Illumina\u00ae"
+      ],
+      "!Sample_organism_ch1": [
+        "Homo sapiens"
+      ],
+      "!Sample_relation": [
+        "BioSample: https://www.ncbi.nlm.nih.gov/biosample/SAMN41570181",
+        "SRA: https://www.ncbi.nlm.nih.gov/sra?term=SRX24725365"
+      ],
+      "!Sample_status": [
+        "Public on Jul 31 2025"
+      ],
+      "!Sample_treatment_protocol_ch1": [
+        "Proliferating cells were harvested at 60 - 80% confluency.",
+        "Quiescent cells were obtained by allowing cells to reach 100% confluency and subsequently incubating cells in serum free media for 1-2 days.",
+        "Replicative senescent (RS) cells were passaged in regular growth media until replicative exhaustion. These cells were maintained in the senescent state for 3-4 months."
+      ]
+    },
+    "title": "LF1 cells, senescent, replicate 3"
+  }
+]

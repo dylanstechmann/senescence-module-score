@@ -4,6 +4,39 @@ A control-gene module score for the human **SenMayo** gene set (125 genes) publi
 
 The symbols match the paper's supplementary table. The procedure does **not**. Saul et al. used GSEA. This repo uses a Seurat-style score: each signature gene is compared with control genes from the same expression bin, then averaged. CDKN1A and CDKN2A are reported as optional orthogonal z-scores when they are present, because they are **not** members of SenMayo.
 
+## Real public-data check — GSE268487
+
+The first external-data check found a **source-label ranking failure**: this project's
+SenMayo module score ranked all three quiescent LF1 fibroblast libraries above
+all three senescent libraries (directional AUROC 0.0; senescent-minus-quiescent
+mean difference -0.413). Signed Fridman ranked these libraries in the expected
+direction (AUROC 1.0), but 34 of 100 random panels also achieved AUROC 1.0.
+Small within-condition variation makes perfect ranking easy in this dataset.
+
+These are actual GEO expression counts, with bins and controls fitted only on
+the three proliferating libraries. This post-2022 study provides an external
+expression check; it has one cell line, no donor/experiment block metadata,
+condition-specific processing differences and no linked functional assay per
+RNA-seq library. It does not establish donor independence, tissue performance
+or rejuvenation. The authors report inflammatory/SASP enrichment in their
+nominally quiescent condition and question its suitability as a negative control;
+source labels do not establish functional senescence-negative truth.
+The reported ranking failure concerns this scoring procedure and
+dataset, not a replication of the SenMayo paper's GSEA.
+
+```bash
+python -m pip install -e .
+python -m senescore.public_validation --download
+python -m unittest discover -s tests -v
+```
+
+The fixed plan, source receipts, individual scores, panel overlaps, marker
+contrasts and interpretation are in [validation/GSE268487/REPORT.md](validation/GSE268487/REPORT.md).
+The 634 KiB count file downloads into ignored `data/public/`; source and mapping
+hashes are checked. Full fits, transformed expression and random panel details
+are written into ignored `artifacts/`. The committed results include every
+library's score and all contrasts; neither expression matrix is committed.
+
 ## The bake-off
 
 `senescore demo` spikes the 125 genes in half of a synthetic cohort and scores SenMayo against a size-matched random gene set. Controls for both sets are blocked out of the SenMayo genes, so the null is not punished just for accidentally using the spiked genes as controls.
