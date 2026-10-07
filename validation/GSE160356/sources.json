@@ -1,0 +1,87 @@
+{
+  "accession": "GSE160356",
+  "geo_metadata": {
+    "bytes": 2452,
+    "sha256": "b46ee0be26f51d7b9a94f3b3cb7c4ba89fd30ef0a68e3809dd609f218a61bff9",
+    "snapshot": "samples.json extracts series text and, per sample, accession, title, condition, supplementary file name and selected factual metadata fields",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE160nnn/GSE160356/soft/GSE160356_family.soft.gz"
+  },
+  "hgnc": {
+    "attribution": "HUGO Gene Nomenclature Committee at the University of Cambridge; https://www.genenames.org/; RRID:SCR_002827",
+    "mapping_method": "Approved rows only; version-stripped Ensembl ID; current uppercase symbol; no aliases",
+    "path": "../GSE268487/hgnc_mapping.tsv.gz",
+    "reuse_policy_url": "https://www.genenames.org/about/",
+    "same_snapshot_as": "validation/GSE268487 (see its sources.json for the source download receipt)",
+    "sha256": "8c4c1714e1627be655d1358c4d4744e8db2d84af4d8076fd07fdffc949acadb2"
+  },
+  "members": {
+    "GSM4872128_190821_A00291_0200_BHKLY3DMXX_1_11786MR0001L01.genename.htcounts.txt.gz": {
+      "bytes": 204636,
+      "sha256": "6d463c02e05e83bc3b02d1753f55d0724c5bae83a0128d96040bfdf8f5a0adf8"
+    },
+    "GSM4872129_190821_A00291_0200_BHKLY3DMXX_1_11786MR0004L01.genename.htcounts.txt.gz": {
+      "bytes": 205791,
+      "sha256": "4898c420c63ac321d23f5a99dd5c7600534a919357f4293e4bdfedbcf3a89e22"
+    },
+    "GSM4872130_190821_A00291_0200_BHKLY3DMXX_1_11786MR0005L01.genename.htcounts.txt.gz": {
+      "bytes": 209082,
+      "sha256": "97fc188699d5212d0e62ddee6c20fff2ea0d8c69987c834df36ba3cd0214934f"
+    },
+    "GSM4872131_190821_A00291_0200_BHKLY3DMXX_1_11786MR0006L01.genename.htcounts.txt.gz": {
+      "bytes": 207833,
+      "sha256": "8c0cbbfefd6965ff125ee0ebb2c6cdcd362c792ecddd9a9067f8bd006b58de3f"
+    },
+    "GSM4872132_190821_A00291_0200_BHKLY3DMXX_1_11786MR0009L01.genename.htcounts.txt.gz": {
+      "bytes": 208284,
+      "sha256": "f26a7b9f9ff5068f30951752bc6ba92020e9f5f1bbaaa4bdf0db1401212cf31c"
+    },
+    "GSM4872133_190821_A00291_0200_BHKLY3DMXX_1_11786MR0010L01.genename.htcounts.txt.gz": {
+      "bytes": 207299,
+      "sha256": "9a032b88450634126a3106221cccef4cfc871c85284d426e27aa0c43bf36ecd2"
+    },
+    "GSM4872134_190821_A00291_0200_BHKLY3DMXX_1_11786MR0011L01.genename.htcounts.txt.gz": {
+      "bytes": 208756,
+      "sha256": "41255e1ac1dfc95d679bb0a55e4ad3221219455dd7657f504ce1d58e32d23357"
+    },
+    "GSM4872135_190821_A00291_0200_BHKLY3DMXX_1_11786MR0014L01.genename.htcounts.txt.gz": {
+      "bytes": 205425,
+      "sha256": "2b3ba356a8630e12aad48c73c6ec36ab6737cfd08e1bcc327e2b9462a60c26be"
+    },
+    "GSM4872136_190821_A00291_0200_BHKLY3DMXX_1_11786MR0015L01.genename.htcounts.txt.gz": {
+      "bytes": 207873,
+      "sha256": "d1e8241bd72541493da9d82042d408ee202d16fc0974df2da39c80eb584d26e8"
+    }
+  },
+  "raw_archive": {
+    "bytes": 1873920,
+    "license": "No dataset-specific license specified by GEO; public access is not an MIT grant",
+    "sha256": "93c1634dc2d6db494cf1592ceb14471e118acc1d99dd27dc1181f1bcea944770",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE160nnn/GSE160356/suppl/GSE160356_RAW.tar"
+  },
+  "retrieved_date": "2026-10-07",
+  "snapshots": {
+    "PLAN.md": "94cc0e228360490f7679d35833d9b44012f7288b132afff146365221e7a9d158",
+    "samples.json": "8af60cd556d9e7c75521e633c898ebc51d889baf32aa086d5849a40bd14aed38"
+  },
+  "study": {
+    "bio_project": "PRJNA672989",
+    "excluded_series": {
+      "GSE160166": "array platform GPL21827 has 60-mer sequences and a genome build but no gene symbols; symbol-level scoring would need an alignment-based annotation that is not attempted"
+    },
+    "geo_title": "RNA accumulation in aged endothelial cells links an interferon gene signature to cellular senescence",
+    "linked_publication": {
+      "doi": "10.1111/acel.14240",
+      "journal": "Aging Cell",
+      "license": "CC BY 4.0",
+      "pmc": "PMC11488300",
+      "pmid": "39422883",
+      "title": "A new gene signature for endothelial senescence identifies self-RNA sensing by retinoic acid-inducible gene I as a molecular facilitator of vascular aging",
+      "use_before_freeze": "design and qualification only; no result read",
+      "year": 2024
+    },
+    "platform": "GPL24676 (Illumina NovaSeq 6000)",
+    "series_public_date": "2023-10-27",
+    "series_submission_date": "2020-10-28",
+    "signature_independence": "public release postdates SenMayo 2022 and Fridman/Tainsky 2008; no clone or lab independence established"
+  }
+}

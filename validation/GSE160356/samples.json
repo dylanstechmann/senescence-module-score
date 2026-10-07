@@ -1,0 +1,470 @@
+{
+  "samples": [
+    {
+      "accession": "GSM4872128",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "ep1",
+      "condition": "early_passage",
+      "count_file": "GSM4872128_190821_A00291_0200_BHKLY3DMXX_1_11786MR0001L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P3 to P8",
+      "reported_replicate": 1,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Early Passage",
+          "tissue: Endothelial Cells",
+          "passage: P3 to P8"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "EP_CT_1"
+    },
+    {
+      "accession": "GSM4872129",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "lp1",
+      "condition": "late_passage",
+      "count_file": "GSM4872129_190821_A00291_0200_BHKLY3DMXX_1_11786MR0004L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P15 to P20",
+      "reported_replicate": 1,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Late Passage",
+          "tissue: Endothelial Cells",
+          "passage: P15 to P20"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "LP_CT_1"
+    },
+    {
+      "accession": "GSM4872130",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "eto1",
+      "condition": "etoposide",
+      "count_file": "GSM4872130_190821_A00291_0200_BHKLY3DMXX_1_11786MR0005L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P6 to P8",
+      "reported_replicate": 1,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Etoposide Treatment",
+          "tissue: Endothelial Cells",
+          "passage: P6 to P8"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "ETO_1"
+    },
+    {
+      "accession": "GSM4872131",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "ep2",
+      "condition": "early_passage",
+      "count_file": "GSM4872131_190821_A00291_0200_BHKLY3DMXX_1_11786MR0006L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P3 to P8",
+      "reported_replicate": 2,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Early Passage",
+          "tissue: Endothelial Cells",
+          "passage: P3 to P8"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "EP_CT_2"
+    },
+    {
+      "accession": "GSM4872132",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "lp2",
+      "condition": "late_passage",
+      "count_file": "GSM4872132_190821_A00291_0200_BHKLY3DMXX_1_11786MR0009L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P15 to P20",
+      "reported_replicate": 2,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Late Passage",
+          "tissue: Endothelial Cells",
+          "passage: P15 to P20"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "LP_CT_2"
+    },
+    {
+      "accession": "GSM4872133",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "eto2",
+      "condition": "etoposide",
+      "count_file": "GSM4872133_190821_A00291_0200_BHKLY3DMXX_1_11786MR0010L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P6 to P8",
+      "reported_replicate": 2,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Etoposide Treatment",
+          "tissue: Endothelial Cells",
+          "passage: P6 to P8"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "ETO_2"
+    },
+    {
+      "accession": "GSM4872134",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "ep3",
+      "condition": "early_passage",
+      "count_file": "GSM4872134_190821_A00291_0200_BHKLY3DMXX_1_11786MR0011L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P3 to P8",
+      "reported_replicate": 3,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Early Passage",
+          "tissue: Endothelial Cells",
+          "passage: P3 to P8"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "EP_CT_3"
+    },
+    {
+      "accession": "GSM4872135",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "lp3",
+      "condition": "late_passage",
+      "count_file": "GSM4872135_190821_A00291_0200_BHKLY3DMXX_1_11786MR0014L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P15 to P20",
+      "reported_replicate": 3,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Late Passage",
+          "tissue: Endothelial Cells",
+          "passage: P15 to P20"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "LP_CT_3"
+    },
+    {
+      "accession": "GSM4872136",
+      "cell_type": "HRMEC",
+      "clone_id": null,
+      "column": "eto3",
+      "condition": "etoposide",
+      "count_file": "GSM4872136_190821_A00291_0200_BHKLY3DMXX_1_11786MR0015L01.genename.htcounts.txt.gz",
+      "donor_id": null,
+      "experiment_block": null,
+      "reported_passage": "P6 to P8",
+      "reported_replicate": 3,
+      "source_fields": {
+        "!Sample_characteristics_ch1": [
+          "treatment: Etoposide Treatment",
+          "tissue: Endothelial Cells",
+          "passage: P6 to P8"
+        ],
+        "!Sample_data_processing": [
+          "Sequenced were mapped to GRCh38 whole genome using STAR 2.7.0d with parameters --readFilesCommand zcat --quantMode GeneCounts --outSAMtype BAM SortedByCoordinate",
+          "feature counted with htseq-count version 0.11.2",
+          "Genome_build: GRCh38 release 96",
+          "Supplementary_files_format_and_content: raw table of counts for each sample"
+        ],
+        "!Sample_extract_protocol_ch1": [
+          "Total RNA was isolated from cells using a Maxwell RSC instrument (Promega) following manufacturer\u2019s instructions",
+          "Libraries were prepared using a TruSeq stranded mRNA-seq library from total RNA"
+        ],
+        "!Sample_instrument_model": [
+          "Illumina NovaSeq 6000"
+        ],
+        "!Sample_library_strategy": [
+          "RNA-Seq"
+        ],
+        "!Sample_organism_ch1": [
+          "Homo sapiens"
+        ],
+        "!Sample_platform_id": [
+          "GPL24676"
+        ],
+        "!Sample_source_name_ch1": [
+          "Human Retinal Microvascular Endothelial Cells"
+        ],
+        "!Sample_status": [
+          "Public on Oct 27 2023"
+        ],
+        "!Sample_treatment_protocol_ch1": [
+          "HRMECs were cultured and passaged until replicative senesence was reached. HRMECs were treated with 1 \u00b5M Etoposide for 4 days. After removal of etoposide HRMECs were split 1:1 and kept for 4 days, until senescence was established."
+        ]
+      },
+      "title": "ETO_3"
+    }
+  ],
+  "series": {
+    "overall_design": "Sequencing of total mRNA from three independent clones, comparing early-passage human retinal microvascular endothelial cells (HRMECs) to replicative and Etoposide-induced senescent counterparts.",
+    "status": "Public on Oct 27 2023",
+    "submission_date": "Oct 28 2020",
+    "title": "RNA accumulation in aged endothelial cells links an interferon gene signature to cellular senescence",
+    "web_link": "https://doi.org/10.1111/acel.14240"
+  }
+}
