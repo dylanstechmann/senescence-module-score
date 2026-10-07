@@ -1,0 +1,1030 @@
+{
+  "accession": "GSE160356",
+  "code_revision": "caa9eb38853449ffef7553eeda74f4509411ed8f",
+  "combined_counts_sha256": "740cc33c7d9f1f7facad276323c006c04bd7010c382a02fd6ade1945b92099c6",
+  "created_utc": "2026-10-07T19:54:38+00:00",
+  "cross_score_pearson_primary_all_9_libraries": {
+    "fridman__fridman_signed": 0.7544997723749161,
+    "fridman__sasp": 0.8153116642006023,
+    "fridman_down__fridman": -0.22972039544844874,
+    "fridman_down__fridman_signed": -0.7495436806425554,
+    "fridman_down__sasp": -0.42076742932623146,
+    "fridman_up__fridman": 0.9298455408170212,
+    "fridman_up__fridman_down": -0.35956061106399195,
+    "fridman_up__fridman_signed": 0.8454694472301016,
+    "fridman_up__sasp": 0.8887296785317172,
+    "sasp__fridman_signed": 0.7951546464268965,
+    "senmayo__fridman": 0.8322286142154729,
+    "senmayo__fridman_down": -0.43861036743200255,
+    "senmayo__fridman_signed": 0.8804690414500385,
+    "senmayo__fridman_up": 0.9632154813192441,
+    "senmayo__sasp": 0.901891124804456
+  },
+  "evaluator_version": 1,
+  "import": {
+    "ensembl_library_counts": [
+      59830980.0,
+      56855762.0,
+      62772326.0,
+      63290587.0,
+      51052349.0,
+      57398334.0,
+      59039654.0,
+      65852906.0,
+      50394647.0
+    ],
+    "ensembl_rows": 58884,
+    "excluded_non_ensembl_counts": [
+      15795877.0,
+      13281842.0,
+      13511028.0,
+      13550688.0,
+      11823943.0,
+      11517984.0,
+      10820169.0,
+      13337633.0,
+      9952056.0
+    ],
+    "excluded_non_ensembl_rows": 5,
+    "mapped_rows": 41900,
+    "mapped_symbols": 41900,
+    "unmapped_ensembl_rows": 16984
+  },
+  "interpretation_limits": [
+    "three libraries per condition; the smallest possible exact two-sided permutation p is 0.1",
+    "series text says three independent clones, but no sample-level clone or pairing is deposited; none is inferred",
+    "passage ranges differ by condition, so passage is confounded with condition",
+    "no per-library functional senescence assay is deposited with the series",
+    "the linked study derived its own endothelial signature (EndoSEN) from related data; it is not scored here",
+    "uniform random panels are not expression matched and do not establish specificity",
+    "no tissue generalization, rejuvenation or diagnostic claim"
+  ],
+  "libraries_in_matrix_order": [
+    "GSM4872128",
+    "GSM4872131",
+    "GSM4872134",
+    "GSM4872130",
+    "GSM4872133",
+    "GSM4872136",
+    "GSM4872129",
+    "GSM4872132",
+    "GSM4872135"
+  ],
+  "orthogonal_expression_markers": {
+    "CDKN1A": {
+      "baseline_z_all_baseline_fit": {
+        "GSM4872128": 1.1608748785037812,
+        "GSM4872129": -1.4239455111211687,
+        "GSM4872130": 1.0910616466725809,
+        "GSM4872131": 0.11904603971250695,
+        "GSM4872132": -1.6154246671703427,
+        "GSM4872133": 0.9054070124101793,
+        "GSM4872134": -1.2799209182162776,
+        "GSM4872135": -3.4117584931750007,
+        "GSM4872136": 0.9113208856863397
+      },
+      "logCPM_by_accession": {
+        "GSM4872128": 9.476856449737959,
+        "GSM4872129": 8.623565313844264,
+        "GSM4872130": 9.453809969553586,
+        "GSM4872131": 9.132931851794035,
+        "GSM4872132": 8.560354938678168,
+        "GSM4872133": 9.392522363501902,
+        "GSM4872134": 8.671110168012747,
+        "GSM4872135": 7.9673560065325635,
+        "GSM4872136": 9.394474628992224
+      },
+      "overlapping_panel_keys": [
+        "fridman_up",
+        "fridman"
+      ]
+    },
+    "CDKN2A": {
+      "baseline_z_all_baseline_fit": {
+        "GSM4872128": 1.2212770272958418,
+        "GSM4872129": 0.8854717004658675,
+        "GSM4872130": 2.602786476960217,
+        "GSM4872131": -1.2281835054902752,
+        "GSM4872132": -0.7774840853176432,
+        "GSM4872133": -0.20994990679351994,
+        "GSM4872134": 0.006906478194432375,
+        "GSM4872135": 3.9555214433389567,
+        "GSM4872136": 1.953876090927254
+      },
+      "logCPM_by_accession": {
+        "GSM4872128": 4.367277079509574,
+        "GSM4872129": 4.228878823392033,
+        "GSM4872130": 4.936650116109024,
+        "GSM4872131": 3.357760436737599,
+        "GSM4872132": 3.5435109558669797,
+        "GSM4872133": 3.777413560499006,
+        "GSM4872134": 3.86678839500091,
+        "GSM4872135": 5.4941640844053925,
+        "GSM4872136": 4.6692092549073365
+      },
+      "overlapping_panel_keys": [
+        "fridman_up",
+        "fridman"
+      ]
+    }
+  },
+  "panels": {
+    "fridman": {
+      "coverage": 0.9696969696969697,
+      "primary": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 2.1821758523096304,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.22414933308716345,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 1.7196795592869727,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.16781407183361774,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 0.5966060638173332,
+            "cohen_d_note": null,
+            "directional_auroc": 0.6666666666666666,
+            "exact_two_sided_permutation_p": 0.6,
+            "mean_difference": 0.05633526125354571,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.59322736315249,
+          "GSM4872129": 0.6365891836984776,
+          "GSM4872130": 0.6894151286690091,
+          "GSM4872131": 0.39766006057856274,
+          "GSM4872132": 0.4643941304506489,
+          "GSM4872133": 0.65229602850121,
+          "GSM4872134": 0.5293396845026876,
+          "GSM4872135": 0.588249577845251,
+          "GSM4872136": 0.8509639503250117
+        }
+      },
+      "sensitivity_all_baseline_fit": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 3.3040807450965652,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.28653012782712484,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 1.7196795592869727,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.16781407183361774,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 1.5474356072633089,
+            "cohen_d_note": null,
+            "directional_auroc": 0.8888888888888888,
+            "exact_two_sided_permutation_p": 0.2,
+            "mean_difference": 0.1187160559935071,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.5100936092073587,
+          "GSM4872129": 0.6365891836984776,
+          "GSM4872130": 0.6894151286690091,
+          "GSM4872131": 0.43684810933789997,
+          "GSM4872132": 0.4643941304506489,
+          "GSM4872133": 0.65229602850121,
+          "GSM4872134": 0.3861430054685977,
+          "GSM4872135": 0.588249577845251,
+          "GSM4872136": 0.8509639503250117
+        }
+      },
+      "source_status": "custom_unverified"
+    },
+    "fridman_down": {
+      "coverage": 1.0,
+      "primary": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": -1.2707725480095964,
+            "cohen_d_note": null,
+            "directional_auroc": 0.2222222222222222,
+            "exact_two_sided_permutation_p": 0.3,
+            "mean_difference": -0.2260149765356898,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 2.663798356552991,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.14859559988891494,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": -2.1340518312381325,
+            "cohen_d_note": null,
+            "directional_auroc": 0.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": -0.3746105764246047,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": -0.21750327724402485,
+          "GSM4872129": -0.42858112958291494,
+          "GSM4872130": -0.21602267441686962,
+          "GSM4872131": -0.05365315334516385,
+          "GSM4872132": -0.3334901544720177,
+          "GSM4872133": -0.2973682504131423,
+          "GSM4872134": 0.26175111525949557,
+          "GSM4872135": -0.37116576054857475,
+          "GSM4872136": -0.17405932010675063
+        }
+      },
+      "sensitivity_all_baseline_fit": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": -2.464898206385621,
+            "cohen_d_note": null,
+            "directional_auroc": 0.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": -0.23258368521741937,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 2.663798356552991,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.14859559988891494,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": -4.239316000592072,
+            "cohen_d_note": null,
+            "directional_auroc": 0.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": -0.3811792851063343,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": -0.12587491314566268,
+          "GSM4872129": -0.42858112958291494,
+          "GSM4872130": -0.21602267441686962,
+          "GSM4872131": 0.031537200266464005,
+          "GSM4872132": -0.3334901544720177,
+          "GSM4872133": -0.2973682504131423,
+          "GSM4872134": 0.10463852359469428,
+          "GSM4872135": -0.37116576054857475,
+          "GSM4872136": -0.17405932010675063
+        }
+      },
+      "source_status": "published_gene_set"
+    },
+    "fridman_signed": {
+      "coverage": [
+        1.0,
+        1.0
+      ],
+      "primary": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 4.450003945296303,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.533465773887358,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 0.5309168563188006,
+            "cohen_d_note": null,
+            "directional_auroc": 0.6666666666666666,
+            "exact_two_sided_permutation_p": 0.6,
+            "mean_difference": 0.057968064805612673,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 3.6413995965123847,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.4754977090817453,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.57899407778174,
+          "GSM4872129": 0.9954231080605767,
+          "GSM4872130": 0.9362421768086167,
+          "GSM4872131": 0.3360635084769834,
+          "GSM4872132": 0.7598687822516066,
+          "GSM4872133": 0.8634479864745304,
+          "GSM4872134": 0.33818759693072487,
+          "GSM4872135": 0.9244464201225009,
+          "GSM4872136": 1.0539523415683751
+        }
+      },
+      "sensitivity_all_baseline_fit": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 5.968652510572572,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.6404891009715508,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 0.5309168563188006,
+            "cohen_d_note": null,
+            "directional_auroc": 0.6666666666666666,
+            "exact_two_sided_permutation_p": 0.6,
+            "mean_difference": 0.057968064805612673,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 4.88919768224933,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.5825210361659381,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.44303055267249025,
+          "GSM4872129": 0.9954231080605767,
+          "GSM4872130": 0.9362421768086167,
+          "GSM4872131": 0.2702767013183367,
+          "GSM4872132": 0.7598687822516066,
+          "GSM4872133": 0.8634479864745304,
+          "GSM4872134": 0.21886794794604292,
+          "GSM4872135": 0.9244464201225009,
+          "GSM4872136": 1.0539523415683751
+        }
+      },
+      "source_status": "published_gene_sets_project_signed_method"
+    },
+    "fridman_up": {
+      "coverage": 1.0,
+      "primary": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 2.2457932908582445,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.27538812598867884,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 1.0655329023507625,
+            "cohen_d_note": null,
+            "directional_auroc": 0.7777777777777778,
+            "exact_two_sided_permutation_p": 0.3,
+            "mean_difference": 0.14058208748024814,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 1.764924596964232,
+            "cohen_d_note": null,
+            "directional_auroc": 0.8888888888888888,
+            "exact_two_sided_permutation_p": 0.2,
+            "mean_difference": 0.1348060385084307,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.48317811659018606,
+          "GSM4872129": 0.5967898853721287,
+          "GSM4872130": 0.689823317528468,
+          "GSM4872131": 0.3670276138701194,
+          "GSM4872132": 0.4504072013974083,
+          "GSM4872133": 0.534508377915575,
+          "GSM4872134": 0.40859706791173345,
+          "GSM4872135": 0.616023827127794,
+          "GSM4872136": 0.8606354808940324
+        }
+      },
+      "sensitivity_all_baseline_fit": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 2.528082894847498,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.3051152529896299,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 1.0655329023507625,
+            "cohen_d_note": null,
+            "directional_auroc": 0.7777777777777778,
+            "exact_two_sided_permutation_p": 0.3,
+            "mean_difference": 0.14058208748024814,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 2.2466137644912285,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.16453316550938174,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.4400058625305494,
+          "GSM4872129": 0.5967898853721287,
+          "GSM4872130": 0.689823317528468,
+          "GSM4872131": 0.33955551677876183,
+          "GSM4872132": 0.4504072013974083,
+          "GSM4872133": 0.534508377915575,
+          "GSM4872134": 0.39006003805987444,
+          "GSM4872135": 0.616023827127794,
+          "GSM4872136": 0.8606354808940324
+        }
+      },
+      "source_status": "published_gene_set"
+    },
+    "sasp": {
+      "coverage": 1.0,
+      "primary": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 3.2831274482460366,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.3771705255075291,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 1.76029868449148,
+            "cohen_d_note": null,
+            "directional_auroc": 0.8888888888888888,
+            "exact_two_sided_permutation_p": 0.2,
+            "mean_difference": 0.21922012671818975,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 1.3289614191709758,
+            "cohen_d_note": null,
+            "directional_auroc": 0.8888888888888888,
+            "exact_two_sided_permutation_p": 0.2,
+            "mean_difference": 0.15795039878933936,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.38973403187306754,
+          "GSM4872129": 0.3080045098252615,
+          "GSM4872130": 0.625129646523694,
+          "GSM4872131": 0.21428805128120132,
+          "GSM4872132": 0.39951537222797784,
+          "GSM4872133": 0.5307739719177338,
+          "GSM4872134": 0.1908463688494657,
+          "GSM4872135": 0.5611997663185133,
+          "GSM4872136": 0.770476410084894
+        }
+      },
+      "sensitivity_all_baseline_fit": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 4.229121426799696,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.3732511180003909,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 1.76029868449148,
+            "cohen_d_note": null,
+            "directional_auroc": 0.8888888888888888,
+            "exact_two_sided_permutation_p": 0.2,
+            "mean_difference": 0.21922012671818975,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 1.6497245305971158,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.15403099128220116,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.29437859786984744,
+          "GSM4872129": 0.3080045098252615,
+          "GSM4872130": 0.625129646523694,
+          "GSM4872131": 0.2787057252478977,
+          "GSM4872132": 0.39951537222797784,
+          "GSM4872133": 0.5307739719177338,
+          "GSM4872134": 0.23354235140740398,
+          "GSM4872135": 0.5611997663185133,
+          "GSM4872136": 0.770476410084894
+        }
+      },
+      "source_status": "custom_unverified"
+    },
+    "senmayo": {
+      "coverage": 0.992,
+      "primary": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 2.961247617497985,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.27499742955992457,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 0.8801966837454871,
+            "cohen_d_note": null,
+            "directional_auroc": 0.6666666666666666,
+            "exact_two_sided_permutation_p": 0.5,
+            "mean_difference": 0.09820408479365872,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 2.818291734226995,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.17679334476626588,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.22476064674176444,
+          "GSM4872129": 0.3858548020924917,
+          "GSM4872130": 0.47377106059635254,
+          "GSM4872131": 0.20693017498342758,
+          "GSM4872132": 0.3031268889538796,
+          "GSM4872133": 0.3641485502527333,
+          "GSM4872134": 0.20610336411005425,
+          "GSM4872135": 0.4791925290876726,
+          "GSM4872136": 0.6248668636659342
+        }
+      },
+      "sensitivity_all_baseline_fit": {
+        "contrasts": {
+          "etoposide_vs_early_passage": {
+            "cohen_d": 3.2985411451754643,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.30762331021321343,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "etoposide_vs_late_passage": {
+            "cohen_d": 0.8801966837454871,
+            "cohen_d_note": null,
+            "directional_auroc": 0.6666666666666666,
+            "exact_two_sided_permutation_p": 0.5,
+            "mean_difference": 0.09820408479365872,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          },
+          "late_passage_vs_early_passage": {
+            "cohen_d": 3.3076298013544227,
+            "cohen_d_note": null,
+            "directional_auroc": 1.0,
+            "exact_two_sided_permutation_p": 0.1,
+            "mean_difference": 0.20941922541955474,
+            "n_negative": 3,
+            "n_positive": 3,
+            "permutation_assignments": 20,
+            "permutation_limitation": "assumes exchangeability; condition/processing confounding is unresolved; no multiplicity correction"
+          }
+        },
+        "scores_by_accession": {
+          "GSM4872128": 0.16169762374938346,
+          "GSM4872129": 0.3858548020924917,
+          "GSM4872130": 0.47377106059635254,
+          "GSM4872131": 0.19188323946386365,
+          "GSM4872132": 0.3031268889538796,
+          "GSM4872133": 0.3641485502527333,
+          "GSM4872134": 0.18633568066213257,
+          "GSM4872135": 0.4791925290876726,
+          "GSM4872136": 0.6248668636659342
+        }
+      },
+      "source_status": "published_gene_set"
+    }
+  },
+  "plan_sha256": "94cc0e228360490f7679d35833d9b44012f7288b132afff146365221e7a9d158",
+  "random_controls": {
+    "contrasts": {
+      "etoposide_vs_early_passage": {
+        "directional_auroc_quantiles_0_2.5_50_97.5_100": [
+          0.0,
+          0.0,
+          0.4444444444444444,
+          1.0,
+          1.0
+        ],
+        "mean_difference_quantiles_0_2.5_50_97.5_100": [
+          -0.10032145136588137,
+          -0.083357528318255,
+          -0.009170641661591648,
+          0.05902193118709858,
+          0.06580901326336064
+        ],
+        "n_directional_auroc_one": 11,
+        "n_directional_auroc_zero": 26,
+        "senmayo_absolute_delta_empirical_rank": 0.009900990099009901
+      },
+      "etoposide_vs_late_passage": {
+        "directional_auroc_quantiles_0_2.5_50_97.5_100": [
+          0.0,
+          0.0,
+          0.4444444444444444,
+          1.0,
+          1.0
+        ],
+        "mean_difference_quantiles_0_2.5_50_97.5_100": [
+          -0.0713108853647273,
+          -0.05405118238643913,
+          -0.003288069553300298,
+          0.0540714218466032,
+          0.07611041566985302
+        ],
+        "n_directional_auroc_one": 12,
+        "n_directional_auroc_zero": 14,
+        "senmayo_absolute_delta_empirical_rank": 0.009900990099009901
+      },
+      "late_passage_vs_early_passage": {
+        "directional_auroc_quantiles_0_2.5_50_97.5_100": [
+          0.0,
+          0.0,
+          0.4444444444444444,
+          1.0,
+          1.0
+        ],
+        "mean_difference_quantiles_0_2.5_50_97.5_100": [
+          -0.1041073379862109,
+          -0.08013518989869235,
+          -0.00199297488374243,
+          0.05945077859311441,
+          0.08583703546339594
+        ],
+        "n_directional_auroc_one": 7,
+        "n_directional_auroc_zero": 19,
+        "senmayo_absolute_delta_empirical_rank": 0.009900990099009901
+      }
+    },
+    "excluded_from_signatures_and_controls": "union of all registered panels plus CDKN1A/CDKN2A",
+    "limitation": "uniform, not expression matched; the rank is not a validated specificity test",
+    "n": 100,
+    "seeds": [
+      1000,
+      1099
+    ],
+    "signature_size": 125
+  },
+  "refusals": {},
+  "signature_overlaps": {
+    "fridman__sasp": [
+      "CXCL1",
+      "CXCL8",
+      "FAS",
+      "GDF15",
+      "ICAM1",
+      "IGFBP2",
+      "IGFBP3",
+      "IGFBP7",
+      "IL1A",
+      "IL1B",
+      "IL6",
+      "MIF",
+      "MMP1",
+      "MMP10",
+      "MMP3",
+      "PAPPA",
+      "PLAU",
+      "PLAUR",
+      "SERPINE1",
+      "TIMP1",
+      "TIMP2",
+      "VEGFA"
+    ],
+    "fridman_down__fridman": [
+      "COL3A1",
+      "EGR1"
+    ],
+    "fridman_down__sasp": [],
+    "fridman_up__fridman": [
+      "CCND1",
+      "CDKN1A",
+      "CDKN2A",
+      "COL1A2",
+      "FN1",
+      "IGFBP2",
+      "IGFBP3",
+      "IGFBP5",
+      "IGFBP7",
+      "ING1",
+      "MDM2",
+      "MMP1",
+      "NDN",
+      "SERPINE1",
+      "SPARC",
+      "THBS1",
+      "TP53",
+      "VIM"
+    ],
+    "fridman_up__fridman_down": [],
+    "fridman_up__sasp": [
+      "IGFBP2",
+      "IGFBP3",
+      "IGFBP4",
+      "IGFBP6",
+      "IGFBP7",
+      "MMP1",
+      "SERPINE1"
+    ],
+    "senmayo__fridman": [
+      "ANGPTL4",
+      "AXL",
+      "BEX3",
+      "BMP2",
+      "CSF1",
+      "CXCL1",
+      "CXCL8",
+      "ETS2",
+      "FAS",
+      "GDF15",
+      "ICAM1",
+      "IGFBP2",
+      "IGFBP3",
+      "IGFBP5",
+      "IGFBP7",
+      "IL1A",
+      "IL1B",
+      "IL6",
+      "JUN",
+      "MIF",
+      "MMP1",
+      "MMP10",
+      "MMP2",
+      "MMP3",
+      "PAPPA",
+      "PLAU",
+      "PLAUR",
+      "PTBP1",
+      "RPS6KA5",
+      "SERPINE1",
+      "SERPINE2",
+      "SPP1",
+      "TIMP2",
+      "VEGFA"
+    ],
+    "senmayo__fridman_down": [],
+    "senmayo__fridman_up": [
+      "ESM1",
+      "IGFBP1",
+      "IGFBP2",
+      "IGFBP3",
+      "IGFBP4",
+      "IGFBP5",
+      "IGFBP6",
+      "IGFBP7",
+      "MMP1",
+      "NRG1",
+      "SERPINE1"
+    ],
+    "senmayo__sasp": [
+      "AREG",
+      "CCL1",
+      "CCL2",
+      "CCL20",
+      "CCL26",
+      "CCL3",
+      "CCL4",
+      "CCL5",
+      "CCL7",
+      "CCL8",
+      "CSF2",
+      "CXCL1",
+      "CXCL10",
+      "CXCL12",
+      "CXCL2",
+      "CXCL3",
+      "CXCL8",
+      "EGF",
+      "FAS",
+      "FGF2",
+      "GDF15",
+      "HGF",
+      "ICAM1",
+      "IGFBP2",
+      "IGFBP3",
+      "IGFBP4",
+      "IGFBP6",
+      "IGFBP7",
+      "IL13",
+      "IL15",
+      "IL1A",
+      "IL1B",
+      "IL6",
+      "IL6ST",
+      "IL7",
+      "MIF",
+      "MMP1",
+      "MMP10",
+      "MMP12",
+      "MMP13",
+      "MMP14",
+      "MMP3",
+      "PAPPA",
+      "PECAM1",
+      "PGF",
+      "PLAT",
+      "PLAU",
+      "PLAUR",
+      "SERPINE1",
+      "TIMP2",
+      "TNF",
+      "TNFRSF1A",
+      "TNFRSF1B",
+      "VEGFA"
+    ]
+  },
+  "software": {
+    "numpy": "1.26.4"
+  },
+  "split": {
+    "baseline_libraries": [
+      "GSM4872128",
+      "GSM4872131",
+      "GSM4872134"
+    ],
+    "basis": "condition baseline only; clone, donor and experiment block are not deposited; no independence claim",
+    "held_out_libraries": [
+      "GSM4872130",
+      "GSM4872133",
+      "GSM4872136",
+      "GSM4872129",
+      "GSM4872132",
+      "GSM4872135"
+    ],
+    "leave_one_out_baseline_folds": [
+      {
+        "scored": "GSM4872128",
+        "train": [
+          "GSM4872131",
+          "GSM4872134"
+        ]
+      },
+      {
+        "scored": "GSM4872131",
+        "train": [
+          "GSM4872128",
+          "GSM4872134"
+        ]
+      },
+      {
+        "scored": "GSM4872134",
+        "train": [
+          "GSM4872128",
+          "GSM4872131"
+        ]
+      }
+    ]
+  },
+  "tracked_tree_changes": false,
+  "verdict": {
+    "rule": "Applies to SenMayo only, under the primary protocol. 'pass': directional AUROC is 1.0 for both late-passage-vs-early-passage and etoposide-vs-early-passage AND SenMayo's absolute mean difference has a two-sided empirical rank <= 0.05 against 100 uniform random 125-gene panels for both contrasts. 'ranking_only_not_distinguishable_from_random_panels': both AUROCs are 1.0 but at least one rank exceeds the threshold. 'fail': any AUROC is below 1.0. 'not_scored': SenMayo was refused for low gene coverage.",
+    "senmayo_empirical_ranks": {
+      "etoposide_vs_early_passage": 0.009900990099009901,
+      "etoposide_vs_late_passage": 0.009900990099009901,
+      "late_passage_vs_early_passage": 0.009900990099009901
+    },
+    "senmayo_primary_directional_auroc": {
+      "etoposide_vs_early_passage": 1.0,
+      "late_passage_vs_early_passage": 1.0
+    },
+    "value": "pass"
+  }
+}

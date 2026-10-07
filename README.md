@@ -39,6 +39,28 @@ hashes are checked. Full fits, transformed expression and random panel details
 are written into ignored `artifacts/`. The committed results include every
 library's score and all contrasts; neither expression matrix is committed.
 
+## Second prespecified check: GSE160356 (retinal endothelial cells)
+
+The plan, pinned inputs and evaluator for a second external check were committed and pushed
+([PLAN.md](validation/GSE160356/PLAN.md)) before any score existed. It uses nine HRMEC RNA-seq libraries (three
+early passage, three late passage, three etoposide-treated), fits controls on the early-passage libraries only,
+and scores each early-passage library with a fit from the other two so the baseline is not centred by its own fit.
+
+Under the prespecified rule SenMayo **passed**: all six induced libraries scored above all three early-passage
+libraries (directional AUROC 1.0 for each induction) and none of 100 random 125-gene panels matched its mean
+difference. Read that narrowly. There are three libraries per condition (the smallest possible exact permutation p
+is 0.1), passage is confounded with condition, and no clone or pairing is deposited. CDKN1A (p21) did not rise in
+either induced condition. Post hoc, the late-passage shift is carried by about ten genes while several classic SASP
+genes fell. Uniform random panels cannot show specificity against interferon or DNA-damage responses. The result
+does not cancel the GSE268487 ranking failure above. The paper behind the data benchmarks its own signature against
+earlier ones, so published results for established signatures may exist; this is not a blind test at the level of
+the literature. Full report: [REPORT.md](validation/GSE160356/REPORT.md).
+
+```bash
+python -m senescore.hrmec_validation --download      # needs the pinned revision named in the report
+python -m unittest discover -s tests -v
+```
+
 ## The bake-off
 
 `senescore demo` spikes the 125 genes in half of a synthetic cohort and scores SenMayo against a size-matched random gene set. Controls for both sets are blocked out of the SenMayo genes, so the null is not punished just for accidentally using the spiked genes as controls.

@@ -1,0 +1,70 @@
+{
+  "baseline_scoring": {
+    "note": "These leave-one-out baseline scores are development-side computations; no sealed library is a test group in them, so they are not listed as folds.",
+    "protocol": "each early-passage library is scored with a fit from the other two (leave-one-out); held-out libraries use the fit from all three early-passage libraries"
+  },
+  "created_utc": "2026-10-07T19:54:38+00:00",
+  "disclaimer": "Procedural receipt for a descriptive 3-vs-3 check. It does not establish biological senescence, independence of the libraries, or anything about tissue.",
+  "folds": [
+    {
+      "test_groups": [
+        "GSM4872129",
+        "GSM4872130",
+        "GSM4872132",
+        "GSM4872133",
+        "GSM4872135",
+        "GSM4872136"
+      ],
+      "train_groups": [
+        "GSM4872128",
+        "GSM4872131",
+        "GSM4872134"
+      ]
+    }
+  ],
+  "input_sha256": [
+    "2b3ba356a8630e12aad48c73c6ec36ab6737cfd08e1bcc327e2b9462a60c26be",
+    "41255e1ac1dfc95d679bb0a55e4ad3221219455dd7657f504ce1d58e32d23357",
+    "4898c420c63ac321d23f5a99dd5c7600534a919357f4293e4bdfedbcf3a89e22",
+    "6d463c02e05e83bc3b02d1753f55d0724c5bae83a0128d96040bfdf8f5a0adf8",
+    "8c0cbbfefd6965ff125ee0ebb2c6cdcd362c792ecddd9a9067f8bd006b58de3f",
+    "8c4c1714e1627be655d1358c4d4744e8db2d84af4d8076fd07fdffc949acadb2",
+    "97fc188699d5212d0e62ddee6c20fff2ea0d8c69987c834df36ba3cd0214934f",
+    "9a032b88450634126a3106221cccef4cfc871c85284d426e27aa0c43bf36ecd2",
+    "d1e8241bd72541493da9d82042d408ee202d16fc0974df2da39c80eb584d26e8",
+    "f26a7b9f9ff5068f30951752bc6ba92020e9f5f1bbaaa4bdf0db1401212cf31c"
+  ],
+  "metric_names": [
+    "cohen_d_vs_early_passage",
+    "directional_auroc_vs_early_passage",
+    "exact_two_sided_permutation_p",
+    "mean_difference_vs_early_passage"
+  ],
+  "model_names": [
+    "fridman",
+    "fridman_down",
+    "fridman_signed",
+    "fridman_up",
+    "random_uniform_panels_100",
+    "sasp",
+    "senmayo"
+  ],
+  "producer": {
+    "code_revision": "caa9eb38853449ffef7553eeda74f4509411ed8f",
+    "tool": "senescore.hrmec_validation",
+    "version": "1"
+  },
+  "reported_leakage": [
+    {
+      "count": 0,
+      "id": "held_out_libraries_used_to_fit_controls"
+    },
+    {
+      "count": 0,
+      "id": "registered_panel_genes_in_random_panels"
+    }
+  ],
+  "schema": "regen-workbench/evaluation-receipt/1",
+  "seed": 0,
+  "tree_dirty": false
+}

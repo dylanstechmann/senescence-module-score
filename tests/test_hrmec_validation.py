@@ -422,5 +422,57 @@ class EndToEndTests(unittest.TestCase):
         self.assertIn("senmayo", results["refusals"])
 
 
+SNAPSHOT = ROOT / "validation" / "GSE160356"
+
+
+@unittest.skipUnless((SNAPSHOT / "results.json").is_file(), "no committed results to check")
+class CommittedResultTests(unittest.TestCase):
+    """Integrity checks on the committed real-data results, with no download and no raw counts."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.sources = json.loads((SNAPSHOT / "sources.json").read_text(encoding="utf-8"))
+        cls.results = json.loads((SNAPSHOT / "results.json").read_text(encoding="utf-8"))
+        cls.receipt = json.loads((SNAPSHOT / "evaluation_receipt.json").read_text(encoding="utf-8"))
+
+    def test_the_plan_and_sample_snapshots_are_the_frozen_ones(self):
+        for name in ("PLAN.md", "samples.json"):
+            self.assertEqual(hv.sha256_file(SNAPSHOT / name), self.sources["snapshots"][name], name)
+        self.assertEqual(self.results["plan_sha256"], self.sources["snapshots"]["PLAN.md"])
+
+    def test_the_run_came_from_one_clean_committed_revision(self):
+        self.assertRegex(self.results["code_revision"], r"^[0-9a-f]{40}$")
+        self.assertIs(self.results["tracked_tree_changes"], False)
+        self.assertEqual(self.receipt["producer"]["code_revision"], self.results["code_revision"])
+        self.assertEqual(self.receipt["created_utc"], self.results["created_utc"])
+
+    def test_the_stored_verdict_follows_from_the_stored_numbers(self):
+        senmayo = self.results["panels"]["senmayo"]["primary"]["contrasts"]
+        ranks = self.results["verdict"]["senmayo_empirical_ranks"]
+        self.assertEqual(self.results["verdict"]["value"], hv.verdict(senmayo, ranks, "senmayo" in self.results["refusals"]))
+
+    def test_the_stored_ranks_recompute_from_the_committed_random_scores(self):
+        with (SNAPSHOT / "random_scores.csv").open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        self.assertEqual([int(row["seed"]) for row in rows], list(range(1000, 1100)))
+        for name, _positive, _negative in hv.CONTRASTS:
+            deltas = [float(row[f"{name}__mean_difference"]) for row in rows]
+            target = self.results["panels"]["senmayo"]["primary"]["contrasts"][name]["mean_difference"]
+            self.assertAlmostEqual(hv.empirical_rank(target, deltas),
+                                   self.results["verdict"]["senmayo_empirical_ranks"][name])
+
+    def test_every_pinned_input_hash_is_in_the_receipt_and_nothing_else_is(self):
+        pinned = {info["sha256"] for info in self.sources["members"].values()} | {self.sources["hgnc"]["sha256"]}
+        self.assertEqual(set(self.receipt["input_sha256"]), pinned)
+
+    def test_no_held_out_library_was_allowed_to_influence_a_fit(self):
+        leakage = {item["id"]: item["count"] for item in self.receipt["reported_leakage"]}
+        self.assertEqual(leakage["held_out_libraries_used_to_fit_controls"], 0)
+        baseline = set(self.results["split"]["baseline_libraries"])
+        for fold in self.results["split"]["leave_one_out_baseline_folds"]:
+            self.assertTrue(set(fold["train"]) < baseline)
+            self.assertNotIn(fold["scored"], fold["train"])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,147 @@
+{
+  "contrasts": {
+    "etoposide_vs_early_passage": {
+      "mean_gene_difference_all": 0.30990087954802953,
+      "mean_gene_difference_without_top10": 0.17666372213492512,
+      "n_genes_higher_in_induced": 91,
+      "n_genes_lower_in_induced": 24,
+      "n_senmayo_genes_present": 124,
+      "top10_higher": [
+        {
+          "difference": 3.553,
+          "gene": "MMP1"
+        },
+        {
+          "difference": 2.18,
+          "gene": "SERPINE2"
+        },
+        {
+          "difference": 2.049,
+          "gene": "IGFBP3"
+        },
+        {
+          "difference": 2.006,
+          "gene": "MMP10"
+        },
+        {
+          "difference": 1.803,
+          "gene": "FAS"
+        },
+        {
+          "difference": 1.488,
+          "gene": "ANGPT1"
+        },
+        {
+          "difference": 1.443,
+          "gene": "PLAT"
+        },
+        {
+          "difference": 1.435,
+          "gene": "ANGPTL4"
+        },
+        {
+          "difference": 1.295,
+          "gene": "CXCL8"
+        },
+        {
+          "difference": 1.036,
+          "gene": "CSF2RB"
+        }
+      ],
+      "top5_lower": [
+        {
+          "difference": -0.978,
+          "gene": "AXL"
+        },
+        {
+          "difference": -0.966,
+          "gene": "TNFRSF1B"
+        },
+        {
+          "difference": -0.661,
+          "gene": "PTBP1"
+        },
+        {
+          "difference": -0.594,
+          "gene": "HMGB1"
+        },
+        {
+          "difference": -0.543,
+          "gene": "IGFBP6"
+        }
+      ]
+    },
+    "late_passage_vs_early_passage": {
+      "mean_gene_difference_all": 0.17917932228032823,
+      "mean_gene_difference_without_top10": 0.005326129228855409,
+      "n_genes_higher_in_induced": 70,
+      "n_genes_lower_in_induced": 39,
+      "n_senmayo_genes_present": 124,
+      "top10_higher": [
+        {
+          "difference": 3.345,
+          "gene": "PLAT"
+        },
+        {
+          "difference": 2.929,
+          "gene": "IGFBP5"
+        },
+        {
+          "difference": 2.762,
+          "gene": "SERPINE2"
+        },
+        {
+          "difference": 2.169,
+          "gene": "MMP1"
+        },
+        {
+          "difference": 2.134,
+          "gene": "IGFBP6"
+        },
+        {
+          "difference": 1.851,
+          "gene": "IGFBP3"
+        },
+        {
+          "difference": 1.687,
+          "gene": "IL18"
+        },
+        {
+          "difference": 1.634,
+          "gene": "FAS"
+        },
+        {
+          "difference": 1.587,
+          "gene": "ANGPTL4"
+        },
+        {
+          "difference": 1.512,
+          "gene": "CSF2RB"
+        }
+      ],
+      "top5_lower": [
+        {
+          "difference": -4.206,
+          "gene": "IGFBP2"
+        },
+        {
+          "difference": -3.091,
+          "gene": "CCL2"
+        },
+        {
+          "difference": -1.923,
+          "gene": "TNFRSF1B"
+        },
+        {
+          "difference": -1.015,
+          "gene": "PGF"
+        },
+        {
+          "difference": -1.01,
+          "gene": "ICAM1"
+        }
+      ]
+    }
+  },
+  "note": "post-hoc and descriptive; log2(CPM+1) difference of group means, no controls"
+}
