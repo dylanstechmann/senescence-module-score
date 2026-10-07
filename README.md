@@ -2,6 +2,8 @@
 
 A control-gene module score for the human **SenMayo** gene set (125 genes) published by Saul et al., Nature Communications 2022 ([10.1038/s41467-022-32552-1](https://doi.org/10.1038/s41467-022-32552-1)).
 
+This is a personal hobby and learning project, developed with substantial assistance from AI coding tools.
+
 The symbols match the paper's supplementary table. The procedure does **not**. Saul et al. used GSEA. This repo uses a Seurat-style score: each signature gene is compared with control genes from the same expression bin, then averaged. CDKN1A and CDKN2A are reported as optional orthogonal z-scores when they are present, because they are **not** members of SenMayo.
 
 ## Real public-data check — GSE268487
