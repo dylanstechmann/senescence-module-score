@@ -1,0 +1,143 @@
+{
+  "code_revision": "52a4604d636360a98bece895e91296ae0c74f2c8",
+  "committed_results_sha256": "ff958176104a189386184665b56e379839bdfde4b62773bea469443b38aec094",
+  "created_utc": "2026-10-08T03:06:15+00:00",
+  "input_table_sha256": "b9a12d1d0394addce58ab4f3d4cf9e95bc895a84175125b51049881c30a0df86",
+  "limits": [
+    "same nine libraries as the earlier check; not independent data",
+    "the 100 random panels have 125 genes and the reduced panels 114, so ranks are approximate",
+    "random removal does not identify which genes drive the shift",
+    "no tissue generalization, rejuvenation or diagnostic claim"
+  ],
+  "plan": "validation/GSE160356/robustness/PLAN.md",
+  "plan_sha256": "fe6d4506003afcdd5b9d420f757de119fed6fb4c6346b22a359400bbd82e5074",
+  "present_senmayo_genes": 124,
+  "random_scores_sha256": "4f81f6275e8ae264d0a632046efd264aa3c573bf74a48613b6ea7faefa9e5e9f",
+  "summary": {
+    "committed_full_panel_mean_difference": {
+      "etoposide_vs_early_passage": 0.27499742955992457,
+      "late_passage_vs_early_passage": 0.17679334476626588
+    },
+    "draws_keeping_pass": 956,
+    "draws_losing_pass": 44,
+    "draws_with_both_primary_auroc_one": 957,
+    "max_rank_observed": {
+      "etoposide_vs_early_passage": 0.009900990099009901,
+      "late_passage_vs_early_passage": 0.0594059405940594
+    },
+    "mean_difference_quantiles_min_2.5_median_97.5_max": {
+      "etoposide_vs_early_passage": [
+        0.1614428749998516,
+        0.19970314343281387,
+        0.2550481801117606,
+        0.3026630833500742,
+        0.3360937935815923
+      ],
+      "late_passage_vs_early_passage": [
+        0.07214976247583968,
+        0.11099557820440595,
+        0.17403579887485088,
+        0.23475770433744447,
+        0.2661917696050978
+      ]
+    },
+    "n_draws": 1000,
+    "n_removed": 10,
+    "panel_size_after_removal": 114,
+    "smallest_late_passage_shift_draws": [
+      {
+        "mean_difference": 0.07214976247583968,
+        "removed": [
+          "ANGPTL4",
+          "C3",
+          "CCL3",
+          "EGF",
+          "IL13",
+          "IL18",
+          "IL6",
+          "PECAM1",
+          "PLAT",
+          "SERPINE2"
+        ],
+        "seed": 2736,
+        "verdict": "ranking_only_not_distinguishable_from_random_panels"
+      },
+      {
+        "mean_difference": 0.07832040374228644,
+        "removed": [
+          "ANG",
+          "CCL2",
+          "CCL5",
+          "IGFBP5",
+          "IGFBP6",
+          "NRG1",
+          "PLAT",
+          "PLAUR",
+          "RPS6KA5",
+          "SERPINE1"
+        ],
+        "seed": 2421,
+        "verdict": "fail"
+      },
+      {
+        "mean_difference": 0.08129927397313055,
+        "removed": [
+          "AXL",
+          "CCL24",
+          "CCL7",
+          "ESM1",
+          "FGF7",
+          "IL6ST",
+          "KITLG",
+          "PLAT",
+          "PLAUR",
+          "SERPINE2"
+        ],
+        "seed": 2907,
+        "verdict": "fail"
+      },
+      {
+        "mean_difference": 0.08273262934001746,
+        "removed": [
+          "ANGPT1",
+          "CCL20",
+          "CCL26",
+          "ESM1",
+          "GEM",
+          "HMGB1",
+          "ICAM1",
+          "IL1A",
+          "IQGAP2",
+          "PLAT"
+        ],
+        "seed": 2887,
+        "verdict": "fail"
+      },
+      {
+        "mean_difference": 0.08333113150022683,
+        "removed": [
+          "ANGPTL4",
+          "BMP6",
+          "EGF",
+          "GEM",
+          "IGFBP1",
+          "IL6ST",
+          "MMP1",
+          "PECAM1",
+          "PLAT",
+          "SERPINE2"
+        ],
+        "seed": 2749,
+        "verdict": "pass"
+      }
+    ],
+    "verdict_counts": {
+      "fail": 43,
+      "pass": 956,
+      "ranking_only_not_distinguishable_from_random_panels": 1
+    }
+  },
+  "tracked_tree_changes": false,
+  "zero_removal_control_max_abs_gap": 0.0,
+  "zero_removal_control_tolerance": 1e-09
+}

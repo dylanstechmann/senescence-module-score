@@ -1,0 +1,66 @@
+{
+  "note": "post-hoc and descriptive; not part of the frozen plan",
+  "overall_loss_rate": 0.044,
+  "top_by_loss_rate": [
+    {
+      "draws_losing_pass": 18,
+      "draws_removed": 109,
+      "gene": "PLAT",
+      "loss_rate": 0.165
+    },
+    {
+      "draws_losing_pass": 12,
+      "draws_removed": 78,
+      "gene": "CSF2RB",
+      "loss_rate": 0.154
+    },
+    {
+      "draws_losing_pass": 10,
+      "draws_removed": 76,
+      "gene": "IL6",
+      "loss_rate": 0.132
+    },
+    {
+      "draws_losing_pass": 8,
+      "draws_removed": 72,
+      "gene": "IL15",
+      "loss_rate": 0.111
+    },
+    {
+      "draws_losing_pass": 8,
+      "draws_removed": 77,
+      "gene": "BMP2",
+      "loss_rate": 0.104
+    },
+    {
+      "draws_losing_pass": 8,
+      "draws_removed": 78,
+      "gene": "FAS",
+      "loss_rate": 0.103
+    },
+    {
+      "draws_losing_pass": 10,
+      "draws_removed": 98,
+      "gene": "FGF2",
+      "loss_rate": 0.102
+    },
+    {
+      "draws_losing_pass": 9,
+      "draws_removed": 95,
+      "gene": "ANGPT1",
+      "loss_rate": 0.095
+    },
+    {
+      "draws_losing_pass": 7,
+      "draws_removed": 79,
+      "gene": "ANGPTL4",
+      "loss_rate": 0.089
+    },
+    {
+      "draws_losing_pass": 8,
+      "draws_removed": 91,
+      "gene": "IL6ST",
+      "loss_rate": 0.088
+    }
+  ]
+}

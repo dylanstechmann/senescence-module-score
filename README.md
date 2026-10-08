@@ -56,6 +56,8 @@ does not cancel the GSE268487 ranking failure above. The paper behind the data b
 earlier ones, so published results for established signatures may exist; this is not a blind test at the level of
 the literature. Full report: [REPORT.md](validation/GSE160356/REPORT.md).
 
+**Gene-removal follow-up (2026-10-08).** A frozen second plan removed 10 random SenMayo genes in each of 1,000 draws and re-applied the same verdict rule on the same nine libraries ([plan](validation/GSE160356/robustness/PLAN.md), [report](validation/GSE160356/robustness/REPORT.md)). The `pass` was kept in 956 draws and lost in 44 (4.4 %): in 43 the late-passage AUROC fell to 0.889, and in one the rank was 0.059. The etoposide contrast never lost it. So the earlier result is more fragile on the late-passage side than the headline suggests. It is the same libraries, not new data.
+
 ```bash
 python -m senescore.hrmec_validation --download      # needs the pinned revision named in the report
 python -m unittest discover -s tests -v
