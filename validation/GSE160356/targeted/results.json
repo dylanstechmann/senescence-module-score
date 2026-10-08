@@ -1,0 +1,132 @@
+{
+  "code_revision": "e82d596d276809713913e0b369fda7a65b36e0bb",
+  "created_utc": "2026-10-08T03:35:49+00:00",
+  "input_table_sha256": "b9a12d1d0394addce58ab4f3d4cf9e95bc895a84175125b51049881c30a0df86",
+  "limits": [
+    "same nine libraries; genes were chosen from these data",
+    "ranks are approximate (smaller panels)"
+  ],
+  "plan": "validation/GSE160356/targeted/PLAN.md",
+  "plan_sha256": "8bcb15d061cf6ec9e6e4f15bf3273670b79b486997bcdca61b856433bdca18da",
+  "removals": {
+    "etoposide_top10": {
+      "contrasts": {
+        "etoposide_vs_early_passage": {
+          "directional_auroc": 1.0,
+          "mean_difference": 0.12231464875226516
+        },
+        "late_passage_vs_early_passage": {
+          "directional_auroc": 0.7777777777777778,
+          "mean_difference": 0.03950825579005024
+        }
+      },
+      "panel_size": 114,
+      "ranks": {
+        "etoposide_vs_early_passage": 0.009900990099009901,
+        "late_passage_vs_early_passage": 0.31683168316831684
+      },
+      "removed": [
+        "MMP1",
+        "SERPINE2",
+        "IGFBP3",
+        "MMP10",
+        "FAS",
+        "ANGPT1",
+        "PLAT",
+        "ANGPTL4",
+        "CXCL8",
+        "CSF2RB"
+      ],
+      "verdict": "fail"
+    },
+    "late_top10": {
+      "contrasts": {
+        "etoposide_vs_early_passage": {
+          "directional_auroc": 1.0,
+          "mean_difference": 0.17251741882600385
+        },
+        "late_passage_vs_early_passage": {
+          "directional_auroc": 0.5555555555555556,
+          "mean_difference": 0.01434271747681759
+        }
+      },
+      "panel_size": 114,
+      "ranks": {
+        "etoposide_vs_early_passage": 0.009900990099009901,
+        "late_passage_vs_early_passage": 0.7227722772277227
+      },
+      "removed": [
+        "PLAT",
+        "IGFBP5",
+        "SERPINE2",
+        "MMP1",
+        "IGFBP6",
+        "IGFBP3",
+        "IL18",
+        "FAS",
+        "ANGPTL4",
+        "CSF2RB"
+      ],
+      "verdict": "fail"
+    },
+    "recurring3": {
+      "contrasts": {
+        "etoposide_vs_early_passage": {
+          "directional_auroc": 1.0,
+          "mean_difference": 0.20448593344792507
+        },
+        "late_passage_vs_early_passage": {
+          "directional_auroc": 1.0,
+          "mean_difference": 0.12355870267668354
+        }
+      },
+      "panel_size": 121,
+      "ranks": {
+        "etoposide_vs_early_passage": 0.009900990099009901,
+        "late_passage_vs_early_passage": 0.009900990099009901
+      },
+      "removed": [
+        "PLAT",
+        "CSF2RB",
+        "IL6"
+      ],
+      "verdict": "pass"
+    },
+    "union_top": {
+      "contrasts": {
+        "etoposide_vs_early_passage": {
+          "directional_auroc": 1.0,
+          "mean_difference": 0.10756671577707033
+        },
+        "late_passage_vs_early_passage": {
+          "directional_auroc": 0.3333333333333333,
+          "mean_difference": -0.03604464325475565
+        }
+      },
+      "panel_size": 110,
+      "ranks": {
+        "etoposide_vs_early_passage": 0.009900990099009901,
+        "late_passage_vs_early_passage": 0.3465346534653465
+      },
+      "removed": [
+        "ANGPT1",
+        "ANGPTL4",
+        "CSF2RB",
+        "CXCL8",
+        "FAS",
+        "IGFBP3",
+        "IGFBP5",
+        "IGFBP6",
+        "IL18",
+        "IL6",
+        "MMP1",
+        "MMP10",
+        "PLAT",
+        "SERPINE2"
+      ],
+      "verdict": "fail"
+    }
+  },
+  "removals_losing_pass": 3,
+  "tracked_tree_changes": false
+}
