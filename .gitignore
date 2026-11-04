@@ -11,3 +11,8 @@ build/
 
 *.pyc
 test-results.txt
+
+# local env files hold keys (names in .env.example)
+.env
+.env.*
+!.env.example
