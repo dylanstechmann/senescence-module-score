@@ -51,14 +51,17 @@ def read_expression_snapshot(path: str) -> tuple[bytes, str]:
     return data, hashlib.sha256(data).hexdigest()
 
 
-def read_expression_csv_with_hash(path: str):
-    """Parse an expression CSV and bind the parse to the bytes that were read."""
+def read_expression_csv_with_hash(path: str, *, allow_single_sample: bool = False):
+    """Parse and hash one snapshot, with single-row input for frozen scoring."""
     import hashlib
 
     data = Path(path).read_bytes()
     rows = list(csv.reader(data.decode("utf-8-sig").splitlines()))
     rows = [row for row in rows if row and any(cell.strip() for cell in row)]
-    if len(rows) < 3:
+    if len(rows) < 2:
+        raise ScoreError("need a header and at least one sample" if allow_single_sample
+                         else "need a header and at least two samples")
+    if len(rows) == 2 and not allow_single_sample:
         raise ScoreError("need a header and at least two samples")
     header = rows[0]
     genes = [gene.strip().upper() for gene in header[1:]]
