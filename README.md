@@ -161,6 +161,9 @@ on all rows can leak held-out expression into those marker z-scores.
 signature and feature-schema hashes, training sample IDs/hash, and source CSV
 hash. `--apply-artifact` reuses those values without refitting; the later CSV
 must have the same gene names in the same order or it fails closed.
+Both `score` and `fridman-signed` accept a single follow-up sample with
+`--apply-artifact`. A multi-sample table is required when fitting controls.
+Apply output includes the exact-byte SHA-256 of the fit artifact and its feature-schema hash.
 `module_score_train_only`, `fit_module_score`, and `transform_module_score`
 are the Python entry points. Fitting on every row still matches
 `module_score`. A frozen artifact improves reproducibility; it does not make

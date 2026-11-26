@@ -93,7 +93,9 @@ def main(argv=None) -> int:
         if not args.apply_artifact and not args.train_samples:
             parser.error("fridman-signed requires --train-samples when fitting")
         try:
-            ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(args.csv)
+            ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(
+                args.csv, allow_single_sample=args.apply_artifact is not None
+            )
             if args.apply_artifact:
                 artifact_bytes = Path(args.apply_artifact).read_bytes()
                 artifact = json.loads(artifact_bytes)
@@ -239,9 +241,12 @@ def main(argv=None) -> int:
         parser.error("--fit-artifact requires --train-samples")
 
     try:
-        ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(args.csv)
+        ids, genes, matrix, input_sha256 = read_expression_csv_with_hash(
+            args.csv, allow_single_sample=args.apply_artifact is not None
+        )
         if args.apply_artifact:
-            artifact = json.loads(Path(args.apply_artifact).read_text(encoding="utf-8"))
+            artifact_bytes = Path(args.apply_artifact).read_bytes()
+            artifact = json.loads(artifact_bytes.decode("utf-8"))
             validate_fit_artifact(artifact)
             result = transform_module_score(matrix, genes, artifact)
             output_gene_set = artifact.get("gene_set_key") or "custom"
@@ -308,6 +313,9 @@ def main(argv=None) -> int:
     }
     if args.apply_artifact:
         payload["fit_artifact_version"] = artifact["version"]
+        payload["fit_artifact_sha256"] = hashlib.sha256(artifact_bytes).hexdigest()
+        payload["fit_artifact_hash_basis"] = "file_bytes"
+        payload["feature_schema_sha256"] = artifact["feature_schema_sha256"]
         payload["training_sample_ids_sha256"] = artifact.get("training_sample_ids_sha256")
         payload["training_input_sha256"] = artifact.get("training_input_sha256")
     elif args.train_samples:

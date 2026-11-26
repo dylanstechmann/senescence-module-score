@@ -4,7 +4,7 @@ import io
 import json
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
 import numpy as np
@@ -220,6 +220,16 @@ class FitArtifactTests(unittest.TestCase):
             self.assertEqual(applied["fit_artifact_hash_basis"], "file_bytes")
             self.assertEqual(applied["fit_artifact_sha256"], hashlib.sha256(artifact_file.read_bytes()).hexdigest())
 
+            _write_expression(expression, ["sample-7"], genes, matrix[-1:])
+            single = io.StringIO()
+            with redirect_stdout(single):
+                self.assertEqual(main(["fridman-signed", str(expression), "--apply-artifact", str(artifact_file)]), 0)
+            sample, = json.loads(single.getvalue())["samples"]
+            batch_sample = applied["samples"][-1]
+            self.assertEqual(sample["id"], batch_sample["id"])
+            for field in ("up_score", "down_score", "signed_score"):
+                self.assertAlmostEqual(sample[field], batch_sample[field], delta=1e-12)
+
     def test_registered_gene_set_provenance_is_bound_to_signature_and_citation(self):
         artifact = fit_module_score(
             self.matrix, self.genes, SENMAYO_HUMAN, self.train_rows,
@@ -299,8 +309,25 @@ class FitArtifactTests(unittest.TestCase):
             actual = [row["senmayo_module_score"] for row in applied["samples"]]
             self.assertEqual(actual, expected)
             self.assertEqual(applied["fit_artifact_version"], 1)
+            self.assertEqual(applied["fit_artifact_hash_basis"], "file_bytes")
+            self.assertEqual(applied["fit_artifact_sha256"], hashlib.sha256(artifact_path.read_bytes()).hexdigest())
+            self.assertEqual(applied["feature_schema_sha256"], artifact["feature_schema_sha256"])
             self.assertEqual(applied["gene_set"], "senmayo")
             self.assertEqual(applied["gene_set_source_status"], "published_gene_set")
+
+            _write_expression(later_csv, self.sample_ids[-1:], self.genes, self.matrix[-1:])
+            single = io.StringIO()
+            with redirect_stdout(single):
+                self.assertEqual(main(["score", str(later_csv), "--apply-artifact", str(artifact_path)]), 0)
+            single_payload = json.loads(single.getvalue())
+            self.assertEqual(single_payload["samples"], applied["samples"][-1:])
+            self.assertEqual(single_payload["fit_artifact_sha256"], applied["fit_artifact_sha256"])
+
+            error = io.StringIO()
+            with redirect_stderr(error), self.assertRaises(SystemExit) as rejected:
+                main(["score", str(later_csv)])
+            self.assertEqual(rejected.exception.code, 2)
+            self.assertIn("at least two samples", error.getvalue())
 
 
 if __name__ == "__main__":
