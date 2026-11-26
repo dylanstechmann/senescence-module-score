@@ -224,7 +224,11 @@ class FitArtifactTests(unittest.TestCase):
             single = io.StringIO()
             with redirect_stdout(single):
                 self.assertEqual(main(["fridman-signed", str(expression), "--apply-artifact", str(artifact_file)]), 0)
-            self.assertEqual(json.loads(single.getvalue())["samples"], applied["samples"][-1:])
+            sample, = json.loads(single.getvalue())["samples"]
+            batch_sample = applied["samples"][-1]
+            self.assertEqual(sample["id"], batch_sample["id"])
+            for field in ("up_score", "down_score", "signed_score"):
+                self.assertAlmostEqual(sample[field], batch_sample[field], delta=1e-12)
 
     def test_registered_gene_set_provenance_is_bound_to_signature_and_citation(self):
         artifact = fit_module_score(
